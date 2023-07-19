@@ -8,6 +8,9 @@ public class AnimalShelterApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(AnimalShelterApplication.class, args);
+
+        System.out.println("Этот код написал Юра");
     }
+
 
 }
