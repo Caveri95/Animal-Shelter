@@ -10,6 +10,7 @@ public class AnimalShelterApplication {
         SpringApplication.run(AnimalShelterApplication.class, args);
 
         System.out.println("Этот код написал Юра");
+        System.out.println("Этот код написал Юра во втрой раз");
     }
 
 
