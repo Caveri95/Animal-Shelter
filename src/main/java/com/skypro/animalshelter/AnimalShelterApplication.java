@@ -11,6 +11,7 @@ public class AnimalShelterApplication {
 
         System.out.println("Этот код написал Юра");
         System.out.println("Этот код написал Юра во втрой раз");
+        System.out.println("Сейчас запушу отдельно");
     }
 
 
