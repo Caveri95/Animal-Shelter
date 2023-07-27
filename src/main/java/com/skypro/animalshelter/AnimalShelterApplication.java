@@ -8,10 +8,6 @@ public class AnimalShelterApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(AnimalShelterApplication.class, args);
-
-        System.out.println("Этот код написал Юра");
-        System.out.println("Этот код написал Юра во втрой раз");
-        System.out.println("Сейчас запушу отдельно");
     }
 
 
