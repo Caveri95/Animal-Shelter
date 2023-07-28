@@ -42,6 +42,7 @@ public class ButtonReactionServiceImpl implements ButtonReactionService {
                 SendMessage messageCAT = new SendMessage(chatId, "Вы выбрали приют для кошек, чем могу помочь?").replyMarkup(keyboard);
                 telegramBot.execute(messageCAT);
                 return messageCAT;
+
             case "DOG":
 
                 SendMessage messageDOG = new SendMessage(chatId, "Вы выбрали приют для собак, чем могу помочь?");
