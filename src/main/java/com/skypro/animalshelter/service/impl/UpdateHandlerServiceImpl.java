@@ -7,15 +7,12 @@ import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import com.pengrad.telegrambot.model.request.Keyboard;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.skypro.animalshelter.service.UpdateHandlerService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UpdateHandlerServiceImpl implements UpdateHandlerService {
 
     private final TelegramBot telegramBot;
-    private final Logger logger = LoggerFactory.getLogger(UpdateHandlerServiceImpl.class);
 
     public UpdateHandlerServiceImpl(TelegramBot telegramBot) {
         this.telegramBot = telegramBot;
