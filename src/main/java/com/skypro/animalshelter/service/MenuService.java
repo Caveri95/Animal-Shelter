@@ -1,5 +1,9 @@
 package com.skypro.animalshelter.service;
 
+import com.pengrad.telegrambot.request.SendMessage;
+
 public interface MenuService {
-    void getStartMenuShelter(Long chatId);
+    SendMessage getStartMenuShelter(Long chatId);
+
+    SendMessage getInfoAboutShelter(Long chatId);
 }

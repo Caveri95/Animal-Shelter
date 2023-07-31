@@ -41,9 +41,8 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
                 if (update.callbackQuery() != null) {
                     buttonReactionService.buttonReaction(update.callbackQuery());
-                }
 
-                if (update.message().text() != null) {
+                } else if (update.message().text() != null) {
                     updateHandler.messageHandler(update);
                 }
             });

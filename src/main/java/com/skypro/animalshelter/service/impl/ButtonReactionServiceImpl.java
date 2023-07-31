@@ -4,18 +4,21 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.CallbackQuery;
 import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
-import com.pengrad.telegrambot.model.request.Keyboard;
 import com.pengrad.telegrambot.request.SendMessage;
+import com.skypro.animalshelter.model.Shelter;
 import com.skypro.animalshelter.service.ButtonReactionService;
+import com.skypro.animalshelter.service.MenuService;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ButtonReactionServiceImpl implements ButtonReactionService {
 
     private final TelegramBot telegramBot;
+    private final MenuService menuService;
 
-    public ButtonReactionServiceImpl(TelegramBot telegramBot) {
+    public ButtonReactionServiceImpl(TelegramBot telegramBot, MenuService menuService) {
         this.telegramBot = telegramBot;
+        this.menuService = menuService;
     }
 
     @Override
@@ -24,7 +27,7 @@ public class ButtonReactionServiceImpl implements ButtonReactionService {
         Long chatId = callbackQuery.message().chat().id();
         String data = callbackQuery.data();
 
-        switch (data) {
+        switch (data) { // Названия в switch через Enum
 
             case "CAT":
 
@@ -37,7 +40,11 @@ public class ButtonReactionServiceImpl implements ButtonReactionService {
                 InlineKeyboardButton button4 = new InlineKeyboardButton("VOLUNTEER");
                 button4.callbackData("VOLUNTEER");
 
-                Keyboard keyboard = new InlineKeyboardMarkup(button1, button2, button3, button4);
+                InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
+                keyboard.addRow(button1);
+                keyboard.addRow(button2);
+                keyboard.addRow(button3);
+                keyboard.addRow(button4);
 
                 SendMessage messageCAT = new SendMessage(chatId, "Вы выбрали приют для кошек, чем могу помочь?").replyMarkup(keyboard);
                 telegramBot.execute(messageCAT);
@@ -54,24 +61,39 @@ public class ButtonReactionServiceImpl implements ButtonReactionService {
                 InlineKeyboardButton button8 = new InlineKeyboardButton("VOLUNTEER");
                 button8.callbackData("VOLUNTEER");
 
-                Keyboard keyboard1 = new InlineKeyboardMarkup(button5, button6, button7, button8);
-
+                InlineKeyboardMarkup keyboard1 = new InlineKeyboardMarkup();
+                keyboard1.addRow(button5);
+                keyboard1.addRow(button6);
+                keyboard1.addRow(button7);
+                keyboard1.addRow(button8);
                 SendMessage messageDOG = new SendMessage(chatId, "Вы выбрали приют для собак, чем могу помочь?").replyMarkup(keyboard1);
                 telegramBot.execute(messageDOG);
                 return messageDOG;
 
-            default: return new SendMessage(chatId, "Позвать волонтера"); // Сюда нужен метод на отправку сообщений
+            case "SHELTER_INFO":
+                return menuService.getInfoAboutShelter(chatId);
+
+            case "INFO_ABOUT_SHELTER":
+                return sendMessage(chatId, Shelter.SHELTER_INFO.getDescription());
+            case "CONTACT_SHELTER":
+                return sendMessage(chatId, Shelter.SHELTER_CONTACT.getDescription());
+            case "INFO_ABOUT_CAR_PASS":
+                return sendMessage(chatId, Shelter.SHELTER_CAR_PASS.getDescription());
+            case "SAFETY_IN_SHELTER_TERRITORY":
+                return sendMessage(chatId, Shelter.SHELTER_SAFETY_INFO.getDescription());
+
+            default:
+                return sendMessage(chatId, "Позвать волонтера");
 
         }
 
-
-
     }
 
-    private void sendMessage(Long chatId, String message) {
+    private SendMessage sendMessage(Long chatId, String message) {
         SendMessage sendMessage = new SendMessage(chatId, message);
 
         telegramBot.execute(sendMessage);
+        return sendMessage;
 
     }
 }
