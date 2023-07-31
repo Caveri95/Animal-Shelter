@@ -45,11 +45,22 @@ public class ButtonReactionServiceImpl implements ButtonReactionService {
 
             case "DOG":
 
-                SendMessage messageDOG = new SendMessage(chatId, "Вы выбрали приют для собак, чем могу помочь?");
+                InlineKeyboardButton button5 = new InlineKeyboardButton("SHELTER_INFO");
+                button5.callbackData("SHELTER_INFO");
+                InlineKeyboardButton button6 = new InlineKeyboardButton("HOW_TO_TAKE_ANIMAL");
+                button6.callbackData("HOW_TO_TAKE_ANIMAL");
+                InlineKeyboardButton button7 = new InlineKeyboardButton("REPORT_ANIMAL");
+                button7.callbackData("REPORT_ANIMAL");
+                InlineKeyboardButton button8 = new InlineKeyboardButton("VOLUNTEER");
+                button8.callbackData("VOLUNTEER");
+
+                Keyboard keyboard1 = new InlineKeyboardMarkup(button5, button6, button7, button8);
+
+                SendMessage messageDOG = new SendMessage(chatId, "Вы выбрали приют для собак, чем могу помочь?").replyMarkup(keyboard1);
                 telegramBot.execute(messageDOG);
                 return messageDOG;
 
-            default: return new SendMessage(chatId, "Позвать волонтера");
+            default: return new SendMessage(chatId, "Позвать волонтера"); // Сюда нужен метод на отправку сообщений
 
         }
 
