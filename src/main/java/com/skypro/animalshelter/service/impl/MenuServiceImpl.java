@@ -4,6 +4,7 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.request.*;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.skypro.animalshelter.service.MenuService;
+import com.skypro.animalshelter.util.CallbackDataRequest;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,10 +19,10 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public SendMessage getStartMenuShelter(Long chatId) {
 
-        InlineKeyboardButton button1 = new InlineKeyboardButton("CAT");
-        button1.callbackData("CAT");
-        InlineKeyboardButton button2 = new InlineKeyboardButton("DOG");
-        button2.callbackData("DOG");
+        InlineKeyboardButton button1 = new InlineKeyboardButton(CallbackDataRequest.CAT.getText());
+        button1.callbackData(CallbackDataRequest.CAT.getCallbackData());
+        InlineKeyboardButton button2 = new InlineKeyboardButton(CallbackDataRequest.DOG.getText());
+        button2.callbackData(CallbackDataRequest.DOG.getCallbackData());
 
         Keyboard keyboard = new InlineKeyboardMarkup(button1, button2);
 
@@ -33,18 +34,18 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public SendMessage getInfoAboutShelter(Long chatId) {
 
-        InlineKeyboardButton button1 = new InlineKeyboardButton("INFO_ABOUT_SHELTER");
-        button1.callbackData("INFO_ABOUT_SHELTER");
-        InlineKeyboardButton button2 = new InlineKeyboardButton("CONTACT_SHELTER");
-        button2.callbackData("CONTACT_SHELTER");
-        InlineKeyboardButton button3 = new InlineKeyboardButton("INFO_ABOUT_CAR_PASS");
-        button3.callbackData("INFO_ABOUT_CAR_PASS");
-        InlineKeyboardButton button4 = new InlineKeyboardButton("SAFETY_IN_SHELTER_TERRITORY");
-        button4.callbackData("SAFETY_IN_SHELTER_TERRITORY");
-        InlineKeyboardButton button5 = new InlineKeyboardButton("GIVE_MY_CONTACT");
-        button5.callbackData("GIVE_MY_CONTACT");
-        InlineKeyboardButton button6 = new InlineKeyboardButton("CALL_VOLUNTEER");
-        button6.callbackData("CALL_VOLUNTEER");
+        InlineKeyboardButton button1 = new InlineKeyboardButton(CallbackDataRequest.ABOUT_SHELTER.getText());
+        button1.callbackData(CallbackDataRequest.ABOUT_SHELTER.getCallbackData());
+        InlineKeyboardButton button2 = new InlineKeyboardButton(CallbackDataRequest.CONTACT_SHELTER.getText());
+        button2.callbackData(CallbackDataRequest.CONTACT_SHELTER.getCallbackData());
+        InlineKeyboardButton button3 = new InlineKeyboardButton(CallbackDataRequest.SAFETY_CONTACT_FOR_CAR_PASS.getText());
+        button3.callbackData(CallbackDataRequest.SAFETY_CONTACT_FOR_CAR_PASS.getCallbackData());
+        InlineKeyboardButton button4 = new InlineKeyboardButton(CallbackDataRequest.SAFETY_IN_SHELTER_TERRITORY.getText());
+        button4.callbackData(CallbackDataRequest.SAFETY_IN_SHELTER_TERRITORY.getCallbackData());
+        InlineKeyboardButton button5 = new InlineKeyboardButton(CallbackDataRequest.GIVE_MY_CONTACT.getText());
+        button5.callbackData(CallbackDataRequest.GIVE_MY_CONTACT.getCallbackData());
+        InlineKeyboardButton button6 = new InlineKeyboardButton(CallbackDataRequest.VOLUNTEER.getText());
+        button6.callbackData(CallbackDataRequest.VOLUNTEER.getCallbackData());
 
         InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
         keyboard.addRow(button1);

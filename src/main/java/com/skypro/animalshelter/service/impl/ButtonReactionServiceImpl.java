@@ -8,6 +8,7 @@ import com.pengrad.telegrambot.request.SendMessage;
 import com.skypro.animalshelter.model.Shelter;
 import com.skypro.animalshelter.service.ButtonReactionService;
 import com.skypro.animalshelter.service.MenuService;
+import com.skypro.animalshelter.util.CallbackDataRequest;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -27,18 +28,20 @@ public class ButtonReactionServiceImpl implements ButtonReactionService {
         Long chatId = callbackQuery.message().chat().id();
         String data = callbackQuery.data();
 
-        switch (data) { // Названия в switch через Enum
+        CallbackDataRequest constantByRequest = CallbackDataRequest.getConstantByRequest(data); // Здесь ищем нужную константу в зависимости от пришедшего callbackQuery
 
-            case "CAT":
+        switch (constantByRequest) {
 
-                InlineKeyboardButton button1 = new InlineKeyboardButton("SHELTER_INFO");
-                button1.callbackData("SHELTER_INFO");
-                InlineKeyboardButton button2 = new InlineKeyboardButton("HOW_TO_TAKE_ANIMAL");
-                button2.callbackData("HOW_TO_TAKE_ANIMAL");
-                InlineKeyboardButton button3 = new InlineKeyboardButton("REPORT_ANIMAL");
-                button3.callbackData("REPORT_ANIMAL");
-                InlineKeyboardButton button4 = new InlineKeyboardButton("VOLUNTEER");
-                button4.callbackData("VOLUNTEER");
+            case CAT:
+
+                InlineKeyboardButton button1 = new InlineKeyboardButton(CallbackDataRequest.GENERAL_SHELTER_INFO.getText());
+                button1.callbackData(CallbackDataRequest.GENERAL_SHELTER_INFO.getCallbackData());
+                InlineKeyboardButton button2 = new InlineKeyboardButton(CallbackDataRequest.HOW_TO_TAKE_ANIMAL.getText());
+                button2.callbackData(CallbackDataRequest.HOW_TO_TAKE_ANIMAL.getCallbackData());
+                InlineKeyboardButton button3 = new InlineKeyboardButton(CallbackDataRequest.REPORT_ANIMAL.getText());
+                button3.callbackData(CallbackDataRequest.REPORT_ANIMAL.getCallbackData());
+                InlineKeyboardButton button4 = new InlineKeyboardButton(CallbackDataRequest.VOLUNTEER.getText());
+                button4.callbackData(CallbackDataRequest.VOLUNTEER.getCallbackData());
 
                 InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
                 keyboard.addRow(button1);
@@ -50,16 +53,16 @@ public class ButtonReactionServiceImpl implements ButtonReactionService {
                 telegramBot.execute(messageCAT);
                 return messageCAT;
 
-            case "DOG":
+            case DOG:
 
-                InlineKeyboardButton button5 = new InlineKeyboardButton("SHELTER_INFO");
-                button5.callbackData("SHELTER_INFO");
-                InlineKeyboardButton button6 = new InlineKeyboardButton("HOW_TO_TAKE_ANIMAL");
-                button6.callbackData("HOW_TO_TAKE_ANIMAL");
-                InlineKeyboardButton button7 = new InlineKeyboardButton("REPORT_ANIMAL");
-                button7.callbackData("REPORT_ANIMAL");
-                InlineKeyboardButton button8 = new InlineKeyboardButton("VOLUNTEER");
-                button8.callbackData("VOLUNTEER");
+                InlineKeyboardButton button5 = new InlineKeyboardButton(CallbackDataRequest.GENERAL_SHELTER_INFO.getText());
+                button5.callbackData(CallbackDataRequest.GENERAL_SHELTER_INFO.getCallbackData());
+                InlineKeyboardButton button6 = new InlineKeyboardButton(CallbackDataRequest.HOW_TO_TAKE_ANIMAL.getText());
+                button6.callbackData(CallbackDataRequest.HOW_TO_TAKE_ANIMAL.getCallbackData());
+                InlineKeyboardButton button7 = new InlineKeyboardButton(CallbackDataRequest.REPORT_ANIMAL.getText());
+                button7.callbackData(CallbackDataRequest.REPORT_ANIMAL.getCallbackData());
+                InlineKeyboardButton button8 = new InlineKeyboardButton(CallbackDataRequest.VOLUNTEER.getText());
+                button8.callbackData(CallbackDataRequest.VOLUNTEER.getCallbackData());
 
                 InlineKeyboardMarkup keyboard1 = new InlineKeyboardMarkup();
                 keyboard1.addRow(button5);
@@ -70,17 +73,21 @@ public class ButtonReactionServiceImpl implements ButtonReactionService {
                 telegramBot.execute(messageDOG);
                 return messageDOG;
 
-            case "SHELTER_INFO":
+            case GENERAL_SHELTER_INFO:
                 return menuService.getInfoAboutShelter(chatId);
 
-            case "INFO_ABOUT_SHELTER":
-                return sendMessage(chatId, Shelter.SHELTER_INFO.getDescription());
-            case "CONTACT_SHELTER":
+            case ABOUT_SHELTER:
+                return sendMessage(chatId, Shelter.SHELTER_INFO.getDescription()); // В этих 4-х case инфа о приюте берется из отдельного enum про приют(можно из CallbackDataRequest)
+            case CONTACT_SHELTER:
                 return sendMessage(chatId, Shelter.SHELTER_CONTACT.getDescription());
-            case "INFO_ABOUT_CAR_PASS":
+            case SAFETY_CONTACT_FOR_CAR_PASS:
                 return sendMessage(chatId, Shelter.SHELTER_CAR_PASS.getDescription());
-            case "SAFETY_IN_SHELTER_TERRITORY":
+            case SAFETY_IN_SHELTER_TERRITORY:
                 return sendMessage(chatId, Shelter.SHELTER_SAFETY_INFO.getDescription());
+            case GIVE_MY_CONTACT:
+                return sendMessage(chatId, "Тут какая то форма для заполнения контактов");
+            case CALL_VOLUNTEER:
+                return sendMessage(chatId, "Позвать волонтера, наверно отдельный какой то чат с волонтером");
 
             default:
                 return sendMessage(chatId, "Позвать волонтера");
