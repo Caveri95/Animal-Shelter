@@ -21,12 +21,9 @@ public class KeyboardUtil {
     public List<InlineKeyboardButton> getKeyboardButtons(CallbackDataRequest... strings) {
         List<InlineKeyboardButton> inlineKeyboardButtons = new ArrayList<>();
         for (CallbackDataRequest string : strings) {
-
             inlineKeyboardButtons.add(button(string.getText(), string.getCallbackData()));
         }
         return inlineKeyboardButtons;
-
-
     }
 
     public InlineKeyboardButton button(String text, String callbackData) {
