@@ -13,7 +13,14 @@ public enum CallbackDataRequest {
     SAFETY_CONTACT_FOR_CAR_PASS("Оформить пропуск на машину", "SAFETY_CONTACT_FOR_CAR_PASS"),
     SAFETY_IN_SHELTER_TERRITORY("Техника безопасности на территории приюта", "SAFETY_IN_SHELTER_TERRITORY"),
     GIVE_MY_CONTACT("Оставить контакт для связи", "GIVE_MY_CONTACT"),
-    CALL_VOLUNTEER("Позвать волонтера", "CALL_VOLUNTEER");
+    CALL_VOLUNTEER("Позвать волонтера", "CALL_VOLUNTEER"),
+    ROLLBACK("Вернуться назад", "ROLLBACK"),
+
+    //Информация приюта
+    SHELTER_INFO("Тут общая информация о приюте", "SHELTER_INFO"),
+    SHELTER_CONTACT("Расписание, маршрут, схема проезда (надо подумать как прикрутить)", "SHELTER_CONTACT"),
+    SHELTER_SAFETY_INFO("Общие рекомендации о технике безопасности на территории приюта", "SHELTER_SAFETY_INFO"),
+    SHELTER_CAR_PASS("Оформление пропуска на машину", "SHELTER_CAR_PASS");
 
 
     private final String text;
