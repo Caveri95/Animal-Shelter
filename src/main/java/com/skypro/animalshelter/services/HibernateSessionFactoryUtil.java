@@ -1,6 +1,6 @@
 package com.skypro.animalshelter.services;
 
-import com.example.animashelter.model.ContactRequest;
+import com.skypro.animalshelter.model.ContactRequest;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;

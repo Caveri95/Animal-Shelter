@@ -1,6 +1,6 @@
 package com.skypro.animalshelter.repositories;
 
-import com.example.animashelter.model.ContactRequest;
+import com.skypro.animalshelter.model.ContactRequest;
 
 public interface ContactRequestDAO {
     void sendToDateBase (ContactRequest contactRequest);

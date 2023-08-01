@@ -1,7 +1,7 @@
 package com.skypro.animalshelter.repositories;
 
-import com.example.animashelter.model.ContactRequest;
-import com.example.animashelter.services.HibernateSessionFactoryUtil;
+import com.skypro.animalshelter.model.ContactRequest;
+import com.skypro.animalshelter.services.HibernateSessionFactoryUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
