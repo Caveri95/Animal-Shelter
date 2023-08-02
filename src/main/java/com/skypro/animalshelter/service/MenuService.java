@@ -11,4 +11,6 @@ public interface MenuService {
 
 
     SendMessage getInfoAboutShelter(Long chatId);
+
+    SendMessage getInfoAboutTakeAnimal(Long chatId, boolean isCat);
 }

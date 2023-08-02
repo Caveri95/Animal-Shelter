@@ -7,8 +7,7 @@ import javax.persistence.*;
 @Entity(name = "shelter_info")
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
+
 @EqualsAndHashCode
 public class ShelterInfo {
     @Id
@@ -53,5 +52,117 @@ public class ShelterInfo {
 
     @Column(name = "refuse_reasons")
     private String refuseReasons;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getAboutShelter() {
+        return aboutShelter;
+    }
+
+    public void setAboutShelter(String aboutShelter) {
+        this.aboutShelter = aboutShelter;
+    }
+
+    public String getAddressAndSchedule() {
+        return addressAndSchedule;
+    }
+
+    public void setAddressAndSchedule(String addressAndSchedule) {
+        this.addressAndSchedule = addressAndSchedule;
+    }
+
+    public String getSafetyContactForCarPass() {
+        return safetyContactForCarPass;
+    }
+
+    public void setSafetyContactForCarPass(String safetyContactForCarPass) {
+        this.safetyContactForCarPass = safetyContactForCarPass;
+    }
+
+    public String getSafetyOnTerritory() {
+        return safetyOnTerritory;
+    }
+
+    public void setSafetyOnTerritory(String safetyOnTerritory) {
+        this.safetyOnTerritory = safetyOnTerritory;
+    }
+
+    public String getFirstMeetRecommendation() {
+        return firstMeetRecommendation;
+    }
+
+    public void setFirstMeetRecommendation(String firstMeetRecommendation) {
+        this.firstMeetRecommendation = firstMeetRecommendation;
+    }
+
+    public String getDocuments() {
+        return documents;
+    }
+
+    public void setDocuments(String documents) {
+        this.documents = documents;
+    }
+
+    public String getTransportationAdvice() {
+        return transportationAdvice;
+    }
+
+    public void setTransportationAdvice(String transportationAdvice) {
+        this.transportationAdvice = transportationAdvice;
+    }
+
+    public String getHouseRulesForSmallAnimal() {
+        return houseRulesForSmallAnimal;
+    }
+
+    public void setHouseRulesForSmallAnimal(String houseRulesForSmallAnimal) {
+        this.houseRulesForSmallAnimal = houseRulesForSmallAnimal;
+    }
+
+    public String getHouseRulesForAdultAnimal() {
+        return houseRulesForAdultAnimal;
+    }
+
+    public void setHouseRulesForAdultAnimal(String houseRulesForAdultAnimal) {
+        this.houseRulesForAdultAnimal = houseRulesForAdultAnimal;
+    }
+
+    public String getRulesForAnimalWithDisability() {
+        return rulesForAnimalWithDisability;
+    }
+
+    public void setRulesForAnimalWithDisability(String rulesForAnimalWithDisability) {
+        this.rulesForAnimalWithDisability = rulesForAnimalWithDisability;
+    }
+
+    public String getCynologistAdvice() {
+        return cynologistAdvice;
+    }
+
+    public void setCynologistAdvice(String cynologistAdvice) {
+        this.cynologistAdvice = cynologistAdvice;
+    }
+
+    public String getCynologists() {
+        return cynologists;
+    }
+
+    public void setCynologists(String cynologists) {
+        this.cynologists = cynologists;
+    }
+
+    public String getRefuseReasons() {
+        return refuseReasons;
+    }
+
+    public void setRefuseReasons(String refuseReasons) {
+        this.refuseReasons = refuseReasons;
+    }
 }
 

@@ -15,12 +15,23 @@ public enum CallbackDataRequest {
     GIVE_MY_CONTACT("Оставить контакт для связи", "GIVE_MY_CONTACT"),
     CALL_VOLUNTEER("Позвать волонтера", "CALL_VOLUNTEER"),
     ROLLBACK("Вернуться назад", "ROLLBACK"),
+    //Консультация клиента
 
-    //Информация приюта
-    SHELTER_INFO("Тут общая информация о приюте", "SHELTER_INFO"),
-    SHELTER_CONTACT("Расписание, маршрут, схема проезда (надо подумать как прикрутить)", "SHELTER_CONTACT"),
-    SHELTER_SAFETY_INFO("Общие рекомендации о технике безопасности на территории приюта", "SHELTER_SAFETY_INFO"),
-    SHELTER_CAR_PASS("Оформление пропуска на машину", "SHELTER_CAR_PASS");
+    SHELTER_RULES_BEFORE_MEETING_ANIMAL("Правила знакомства с животным", "SHELTER_RULES_BEFORE_MEETING_ANIMAL"),
+    DOCUMENTS_TO_TAKE_ANIMAL("Список документов, чтобы взять животное", "DOCUMENTS_TO_TAKE_ANIMAL"),
+    TRANSPORTATION_ADVICE("Рекомендации по транспортировке животного", "TRANSPORTATION_ADVICE"),
+    HOUSE_RULES_FOR_SMALL_ANIMAL("Рекомендаций по обустройству дома для детенышей", "HOUSE_RULES_FOR_KITTY"),
+    HOUSE_RULES_FOR_ADULT_ANIMAL("Рекомендаций по обустройству дома взрослого животного", "HOUSE_RULES_FOR_ADULT_ANIMAL"),
+    HOUSE_RULES_FOR_ANIMAL_WITH_DISABILITY("Уход за животными с ограниченными возможностями", "HOUSE_RULES_FOR_ANIMAL_WITH_DISABILITY"),
+    CYNOLOGIST_ADVICE("Рекомендации по уходу от кинологов", "CYNOLOGIST_ADVICE"),
+    CYNOLOGISTS("Рекомендованные кинологи", "CYNOLOGISTS"),
+    REFUSE_REASONS("Причины для отказа забрать собаку", "REFUSE_REASONS");
+
+
+
+
+
+
 
 
     private final String text;

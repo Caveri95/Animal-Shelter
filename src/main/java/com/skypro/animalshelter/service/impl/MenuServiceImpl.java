@@ -1,16 +1,12 @@
 package com.skypro.animalshelter.service.impl;
 
 import com.pengrad.telegrambot.TelegramBot;
-import com.pengrad.telegrambot.model.CallbackQuery;
 import com.pengrad.telegrambot.model.request.*;
 import com.pengrad.telegrambot.request.SendMessage;
-import com.skypro.animalshelter.model.ShelterInfo;
-import com.skypro.animalshelter.repository.ShelterInfoRepository;
 import com.skypro.animalshelter.service.MenuService;
 import com.skypro.animalshelter.util.KeyboardUtil;
+import com.skypro.animalshelter.util.MessageSender;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 import static com.skypro.animalshelter.util.CallbackDataRequest.*;
 
@@ -19,12 +15,12 @@ public class MenuServiceImpl implements MenuService {
 
     private final TelegramBot telegramBot;
     private final KeyboardUtil keyboardUtil;
-    private final ShelterInfoRepository shelterInfoRepository;
+    private final MessageSender messageSender;
 
-    public MenuServiceImpl(TelegramBot telegramBot, KeyboardUtil keyboardUtil, ShelterInfoRepository shelterInfoRepository) {
+    public MenuServiceImpl(TelegramBot telegramBot, KeyboardUtil keyboardUtil, MessageSender messageSender) {
         this.telegramBot = telegramBot;
         this.keyboardUtil = keyboardUtil;
-        this.shelterInfoRepository = shelterInfoRepository;
+        this.messageSender = messageSender;
     }
 
     @Override
@@ -36,7 +32,6 @@ public class MenuServiceImpl implements MenuService {
         telegramBot.execute(sendMessage);
         return sendMessage;
     }
-
 
 
     @Override
@@ -51,9 +46,42 @@ public class MenuServiceImpl implements MenuService {
                 VOLUNTEER,
                 ROLLBACK);
 
-        SendMessage sendMessage = new SendMessage(chatId, "Выберите интересующую вас информацию").replyMarkup(inlineKeyboardMarkup);
-        telegramBot.execute(sendMessage);
-        return sendMessage;
+        return messageSender.sendMessageWithKeyboard(chatId, "Выберите интересующую вас информацию", inlineKeyboardMarkup);
+    }
+
+    @Override
+    public SendMessage getInfoAboutTakeAnimal(Long chatId, boolean isCat) {
+        if (!isCat) {
+
+            InlineKeyboardMarkup inlineKeyboardMarkup = keyboardUtil.setKeyboard(
+                    SHELTER_RULES_BEFORE_MEETING_ANIMAL,
+                    DOCUMENTS_TO_TAKE_ANIMAL,
+                    TRANSPORTATION_ADVICE,
+                    HOUSE_RULES_FOR_SMALL_ANIMAL,
+                    HOUSE_RULES_FOR_ADULT_ANIMAL,
+                    HOUSE_RULES_FOR_ANIMAL_WITH_DISABILITY,
+                    CYNOLOGIST_ADVICE,
+                    CYNOLOGISTS,
+                    REFUSE_REASONS,
+                    GIVE_MY_CONTACT);
+
+            return messageSender.sendMessageWithKeyboard(chatId, "Постараюсь дать Вам максимально полную информацию " +
+                    "о том как разобраться с бюрократическими (оформление договора) и бытовыми (как подготовиться к жизни с животным) " +
+                    "вопросами)", inlineKeyboardMarkup);
+        } else {
+            InlineKeyboardMarkup inlineKeyboardMarkup = keyboardUtil.setKeyboard(
+                    SHELTER_RULES_BEFORE_MEETING_ANIMAL,
+                    DOCUMENTS_TO_TAKE_ANIMAL,
+                    TRANSPORTATION_ADVICE,
+                    HOUSE_RULES_FOR_SMALL_ANIMAL,
+                    HOUSE_RULES_FOR_ADULT_ANIMAL,
+                    HOUSE_RULES_FOR_ANIMAL_WITH_DISABILITY,
+                    GIVE_MY_CONTACT);
+
+            return messageSender.sendMessageWithKeyboard(chatId, "Постараюсь дать Вам максимально полную информацию " +
+                    "о том как разобраться с бюрократическими (оформление договора) и бытовыми (как подготовиться к жизни с животным) " +
+                    "вопросами)", inlineKeyboardMarkup);
+        }
     }
 
 }

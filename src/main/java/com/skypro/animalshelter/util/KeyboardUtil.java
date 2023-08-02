@@ -18,7 +18,7 @@ public class KeyboardUtil {
         return inlineKeyboardMarkup;
     }
 
-    public List<InlineKeyboardButton> getKeyboardButtons(CallbackDataRequest... strings) {
+    private List<InlineKeyboardButton> getKeyboardButtons(CallbackDataRequest... strings) {
         List<InlineKeyboardButton> inlineKeyboardButtons = new ArrayList<>();
         for (CallbackDataRequest string : strings) {
             inlineKeyboardButtons.add(button(string.getText(), string.getCallbackData()));
@@ -26,7 +26,7 @@ public class KeyboardUtil {
         return inlineKeyboardButtons;
     }
 
-    public InlineKeyboardButton button(String text, String callbackData) {
+    private InlineKeyboardButton button(String text, String callbackData) {
         InlineKeyboardButton button = new InlineKeyboardButton(text);
         button.callbackData(callbackData);
         return button;
