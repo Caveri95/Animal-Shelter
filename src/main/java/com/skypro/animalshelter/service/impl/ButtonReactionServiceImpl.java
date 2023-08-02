@@ -4,12 +4,19 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.CallbackQuery;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import com.pengrad.telegrambot.request.SendMessage;
+import com.skypro.animalshelter.model.ShelterInfo;
+import com.skypro.animalshelter.model.ShelterType;
+import com.skypro.animalshelter.model.User;
+import com.skypro.animalshelter.repository.ShelterInfoRepository;
+import com.skypro.animalshelter.repository.UserRepository;
 import com.skypro.animalshelter.service.ButtonReactionService;
 import com.skypro.animalshelter.service.MenuService;
 import com.skypro.animalshelter.util.CallbackDataRequest;
 import com.skypro.animalshelter.util.KeyboardUtil;
 import com.skypro.animalshelter.util.MessageSender;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 import static com.skypro.animalshelter.util.CallbackDataRequest.*;
 
@@ -20,12 +27,15 @@ public class ButtonReactionServiceImpl implements ButtonReactionService {
     private final MenuService menuService;
     private final KeyboardUtil keyboardUtil;
     private final MessageSender messageSender;
+    private final ShelterInfoRepository shelterInfoRepository;
 
-    public ButtonReactionServiceImpl(TelegramBot telegramBot, MenuService menuService, KeyboardUtil keyboardUtil, MessageSender messageSender) {
+
+    public ButtonReactionServiceImpl(TelegramBot telegramBot, MenuService menuService, KeyboardUtil keyboardUtil, MessageSender messageSender, ShelterInfoRepository shelterInfoRepository) {
         this.telegramBot = telegramBot;
         this.menuService = menuService;
         this.keyboardUtil = keyboardUtil;
         this.messageSender = messageSender;
+        this.shelterInfoRepository = shelterInfoRepository;
     }
 
     @Override
@@ -58,11 +68,12 @@ public class ButtonReactionServiceImpl implements ButtonReactionService {
             case GENERAL_SHELTER_INFO:
                 return menuService.getInfoAboutShelter(chatId);
 
-            case ABOUT_SHELTER: //тут разделение на кошачий и собачий нужно
+            case ABOUT_SHELTER: //тут разделение на кошачий и собачий нужно по типу приюта пользователя
+
                 return messageSender.sendMessage(chatId, SHELTER_INFO.getText());
 
             case CONTACT_SHELTER:
-                return messageSender.sendMessage(chatId, SHELTER_CONTACT.getText());
+                return messageSender.sendMessage(chatId, CONTACT_SHELTER.getText());
 
             case SAFETY_CONTACT_FOR_CAR_PASS:
                 return messageSender.sendMessage(chatId, SHELTER_CAR_PASS.getText());

@@ -1,11 +1,16 @@
 package com.skypro.animalshelter.service.impl;
 
 import com.pengrad.telegrambot.TelegramBot;
+import com.pengrad.telegrambot.model.CallbackQuery;
 import com.pengrad.telegrambot.model.request.*;
 import com.pengrad.telegrambot.request.SendMessage;
+import com.skypro.animalshelter.model.ShelterInfo;
+import com.skypro.animalshelter.repository.ShelterInfoRepository;
 import com.skypro.animalshelter.service.MenuService;
 import com.skypro.animalshelter.util.KeyboardUtil;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 import static com.skypro.animalshelter.util.CallbackDataRequest.*;
 
@@ -14,10 +19,12 @@ public class MenuServiceImpl implements MenuService {
 
     private final TelegramBot telegramBot;
     private final KeyboardUtil keyboardUtil;
+    private final ShelterInfoRepository shelterInfoRepository;
 
-    public MenuServiceImpl(TelegramBot telegramBot, KeyboardUtil keyboardUtil) {
+    public MenuServiceImpl(TelegramBot telegramBot, KeyboardUtil keyboardUtil, ShelterInfoRepository shelterInfoRepository) {
         this.telegramBot = telegramBot;
         this.keyboardUtil = keyboardUtil;
+        this.shelterInfoRepository = shelterInfoRepository;
     }
 
     @Override
@@ -29,6 +36,8 @@ public class MenuServiceImpl implements MenuService {
         telegramBot.execute(sendMessage);
         return sendMessage;
     }
+
+
 
     @Override
     public SendMessage getInfoAboutShelter(Long chatId) {
