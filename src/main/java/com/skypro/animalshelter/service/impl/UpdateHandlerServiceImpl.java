@@ -20,13 +20,16 @@ public class UpdateHandlerServiceImpl implements UpdateHandlerService {
         Long chatId = update.message().chat().id();
         String userText = update.message().text();
 
-        if (update.message().text() != null) {
-
             if ("/start".equals(userText)) {
                 menuService.getStartMenuShelter(chatId);
-                return;
+            } else if (userText != null) {
+
+                //Сюда сообщения остальные (например для заполнения контактной информации)
+
             }
 
-        }
+
+
+
     }
 }
