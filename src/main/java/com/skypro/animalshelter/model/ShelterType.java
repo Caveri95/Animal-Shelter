@@ -1,3 +1,4 @@
+/*
 package com.skypro.animalshelter.model;
 
 public enum ShelterType {
@@ -14,3 +15,4 @@ public enum ShelterType {
         return text;
     }
 }
+*/
