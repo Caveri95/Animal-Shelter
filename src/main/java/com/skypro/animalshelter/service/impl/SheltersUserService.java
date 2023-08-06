@@ -24,4 +24,25 @@ public class SheltersUserService {
         userRepository.save(user);
         return user;
     }
+
+    public SheltersUser editUser(SheltersUser user) {
+        if (userRepository.findById(user.getId()).isPresent()) {
+            userRepository.save(user);
+            return user;
+        } else {
+            return null;
+
+        }
+    }
+
+    public boolean deleteUserById(Long id) {
+        if (userRepository.findById(id).isPresent()) {
+            userRepository.deleteById(id);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
 }
