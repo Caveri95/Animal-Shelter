@@ -31,7 +31,6 @@ public class ButtonReactionServiceImpl implements ButtonReactionService {
 
     private boolean isCat = false;
 
-
     public ButtonReactionServiceImpl(TelegramBot telegramBot, MenuService menuService, KeyboardUtil keyboardUtil, MessageSender messageSender, ShelterInfoRepository shelterInfoRepository) {
         this.telegramBot = telegramBot;
         this.menuService = menuService;
@@ -100,7 +99,7 @@ public class ButtonReactionServiceImpl implements ButtonReactionService {
                 }
 
             case GIVE_MY_CONTACT:
-                return messageSender.sendMessage(chatId, "Тут какая то форма для заполнения контактов");
+                return messageSender.sendMessage(chatId, "Введите ваши данные в формате \"Имя Фамилия номер телефона с кодом +7\" ");
 
             case CALL_VOLUNTEER:
                 return messageSender.sendMessage(chatId, "Позвать волонтера, наверно отдельный какой то чат с волонтером");

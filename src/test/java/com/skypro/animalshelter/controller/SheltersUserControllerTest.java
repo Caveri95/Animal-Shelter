@@ -48,7 +48,7 @@ public class SheltersUserControllerTest {
 
     @Test
     @DisplayName("Вывод всех пользователей")
-    void getAllUser() {
+    void shouldReturnListOfSheltersUserWhenGetAllUserCalled() {
         when(userService.getAllUsers()).thenReturn(USERS_LIST);
 
         ResponseEntity<List<SheltersUser>> allUser = sheltersUserController.getAllUser();
@@ -60,7 +60,7 @@ public class SheltersUserControllerTest {
 
     @Test
     @DisplayName("Редактирование пользователя")
-    void editUser() {
+    void shouldReturnUserWhenEditUserCalled() {
 
         when(userService.editUser(user)).thenReturn(user);
 
@@ -80,6 +80,6 @@ public class SheltersUserControllerTest {
         ResponseEntity<Void> voidResponseEntity = sheltersUserController.deleteUser(anyLong());
 
         Assertions.assertEquals(HttpStatus.OK, voidResponseEntity.getStatusCode());
-
+        verify(userService, only()).deleteUserById(anyLong());
     }
 }
