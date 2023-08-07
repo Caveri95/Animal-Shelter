@@ -15,11 +15,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("users")
-public class UserController {
+public class SheltersUserController {
 
     private final SheltersUserService userService;
 
-    public UserController(SheltersUserService userService) {
+    public SheltersUserController(SheltersUserService userService) {
         this.userService = userService;
     }
 
