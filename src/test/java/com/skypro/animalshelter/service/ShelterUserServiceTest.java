@@ -13,8 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertIterableEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
@@ -27,7 +26,7 @@ public class ShelterUserServiceTest {
     private SheltersUserService userService;
 
     SheltersUser testUser = new SheltersUser(5, "testName", "testSurname", "test_012345");
-    SheltersUser userForEdit = new SheltersUser(6, "editName", "editSurname", "test_987654");
+
 
     public static final List<SheltersUser> USERS_LIST = List.of(
             new SheltersUser(1, "name1", "surname1", "1"),
@@ -37,7 +36,7 @@ public class ShelterUserServiceTest {
     );
 
     @Test
-    public void shouldReturnCollectionOfShelterUserWhenFindAllUserCalled() {
+    void shouldReturnCollectionOfShelterUserWhenFindAllUserCalled() {
         when(userRepository.findAll())
                 .thenReturn(USERS_LIST);
 
@@ -45,14 +44,15 @@ public class ShelterUserServiceTest {
     }
 
     @Test
-    public void shouldReturnUserWhenCreateUserCalled() {
+    void shouldReturnUserWhenCreateUserCalled() {
         when(userService.createUser(testUser)).thenReturn(testUser);
 
         assertEquals(userService.createUser(testUser), testUser);
+
     }
 
     @Test
-    public void shouldReturnUserWhenEditUserCalled() {
+    void shouldReturnUserWhenEditUserCalled() {
 
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(testUser));
 
@@ -62,10 +62,10 @@ public class ShelterUserServiceTest {
     }
 
     @Test
-    public void shouldReturnTrueWhenDeleteUserByIdCalled() {
+    void shouldReturnTrueWhenDeleteUserByIdCalled() {
 
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(testUser));
 
-        Assertions.assertThat(userService.deleteUserById(anyLong())).isTrue();
+        assertTrue(userService.deleteUserById(anyLong()));
     }
 }

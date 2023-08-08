@@ -31,7 +31,6 @@ public class SheltersUserService {
             return user;
         } else {
             return null;
-
         }
     }
 
