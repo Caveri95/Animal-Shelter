@@ -1,6 +1,6 @@
 package com.skypro.animalshelter.service;
 
-import com.skypro.animalshelter.model.SheltersUser;
+import com.skypro.animalshelter.model.ShelterUsers;
 import com.skypro.animalshelter.repository.SheltersUserRepository;
 import com.skypro.animalshelter.service.impl.SheltersUserService;
 import org.assertj.core.api.Assertions;
@@ -18,21 +18,21 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class ShelterUserServiceTest {
+public class ShelterShelterUsersServiceTest {
 
     @Mock
     private SheltersUserRepository userRepository;
     @InjectMocks
     private SheltersUserService userService;
 
-    SheltersUser testUser = new SheltersUser(5, "testName", "testSurname", "test_012345");
+    ShelterUsers testShelterUsers = new ShelterUsers(5, "testName", "testSurname", "test_012345");
 
 
-    public static final List<SheltersUser> USERS_LIST = List.of(
-            new SheltersUser(1, "name1", "surname1", "1"),
-            new SheltersUser(2, "name2", "surname2", "2"),
-            new SheltersUser(3, "name3", "surname3", "3"),
-            new SheltersUser(4, "name4", "surname4", "4")
+    public static final List<ShelterUsers> USERS_LIST = List.of(
+            new ShelterUsers(1, "name1", "surname1", "1"),
+            new ShelterUsers(2, "name2", "surname2", "2"),
+            new ShelterUsers(3, "name3", "surname3", "3"),
+            new ShelterUsers(4, "name4", "surname4", "4")
     );
 
     @Test
@@ -45,26 +45,26 @@ public class ShelterUserServiceTest {
 
     @Test
     void shouldReturnUserWhenCreateUserCalled() {
-        when(userService.createUser(testUser)).thenReturn(testUser);
+        when(userService.createUser(testShelterUsers)).thenReturn(testShelterUsers);
 
-        assertEquals(userService.createUser(testUser), testUser);
+        assertEquals(userService.createUser(testShelterUsers), testShelterUsers);
 
     }
 
     @Test
     void shouldReturnUserWhenEditUserCalled() {
 
-        when(userRepository.findById(anyLong())).thenReturn(Optional.of(testUser));
+        when(userRepository.findById(anyLong())).thenReturn(Optional.of(testShelterUsers));
 
-        SheltersUser editUser = userService.editUser(testUser);
+        ShelterUsers editShelterUsers = userService.editUser(testShelterUsers);
 
-        Assertions.assertThat(editUser).isEqualTo(testUser);
+        Assertions.assertThat(editShelterUsers).isEqualTo(testShelterUsers);
     }
 
     @Test
     void shouldReturnTrueWhenDeleteUserByIdCalled() {
 
-        when(userRepository.findById(anyLong())).thenReturn(Optional.of(testUser));
+        when(userRepository.findById(anyLong())).thenReturn(Optional.of(testShelterUsers));
 
         assertTrue(userService.deleteUserById(anyLong()));
     }

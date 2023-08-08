@@ -38,7 +38,7 @@ public class MenuServiceImpl implements MenuService {
     public SendMessage getInfoAboutShelter(Long chatId) {
 
         InlineKeyboardMarkup inlineKeyboardMarkup = keyboardUtil.setKeyboard(
-                ABOUT_SHELTER,                                             // тут нужно выводить разную информацию в зависимости от выбранного приюта
+                ABOUT_SHELTER,
                 CONTACT_SHELTER,
                 SAFETY_CONTACT_FOR_CAR_PASS,
                 SAFETY_IN_SHELTER_TERRITORY,

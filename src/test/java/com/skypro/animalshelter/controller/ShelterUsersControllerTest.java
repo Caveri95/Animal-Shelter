@@ -1,6 +1,6 @@
 package com.skypro.animalshelter.controller;
 
-import com.skypro.animalshelter.model.SheltersUser;
+import com.skypro.animalshelter.model.ShelterUsers;
 import com.skypro.animalshelter.service.impl.SheltersUserService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -14,13 +14,13 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
-import static com.skypro.animalshelter.service.ShelterUserServiceTest.USERS_LIST;
+import static com.skypro.animalshelter.service.ShelterShelterUsersServiceTest.USERS_LIST;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class SheltersUserControllerTest {
+public class ShelterUsersControllerTest {
 
     @Mock
     private SheltersUserService userService;
@@ -29,20 +29,20 @@ public class SheltersUserControllerTest {
     @InjectMocks
     private SheltersUserController sheltersUserController;
 
-    SheltersUser user = new SheltersUser(6, "editName", "editSurname", "test_987654");
+    ShelterUsers shelterUsers = new ShelterUsers(6, "editName", "editSurname", "test_987654");
 
 
     @Test
     @DisplayName("Добавление пользователя")
     void shouldReturnTrueWhenAddUserCalled() {
 
-        when(userService.createUser(user)).thenReturn(user);
+        when(userService.createUser(shelterUsers)).thenReturn(shelterUsers);
 
-        ResponseEntity<SheltersUser> sheltersUserResponseEntity = sheltersUserController.addUser(user);
+        ResponseEntity<ShelterUsers> sheltersUserResponseEntity = sheltersUserController.addUser(shelterUsers);
 
-        Assertions.assertEquals(user, sheltersUserResponseEntity.getBody());
+        Assertions.assertEquals(shelterUsers, sheltersUserResponseEntity.getBody());
 
-        verify(userService, only()).createUser(user);
+        verify(userService, only()).createUser(shelterUsers);
 
     }
 
@@ -51,7 +51,7 @@ public class SheltersUserControllerTest {
     void shouldReturnListOfSheltersUserWhenGetAllUserCalled() {
         when(userService.getAllUsers()).thenReturn(USERS_LIST);
 
-        ResponseEntity<List<SheltersUser>> allUser = sheltersUserController.getAllUser();
+        ResponseEntity<List<ShelterUsers>> allUser = sheltersUserController.getAllUser();
 
         assertIterableEquals(allUser.getBody(), USERS_LIST);
 
@@ -62,13 +62,13 @@ public class SheltersUserControllerTest {
     @DisplayName("Редактирование пользователя")
     void shouldReturnUserWhenEditUserCalled() {
 
-        when(userService.editUser(user)).thenReturn(user);
+        when(userService.editUser(shelterUsers)).thenReturn(shelterUsers);
 
-        ResponseEntity<SheltersUser> sheltersUserResponseEntity = sheltersUserController.editUser(user);
+        ResponseEntity<ShelterUsers> sheltersUserResponseEntity = sheltersUserController.editUser(shelterUsers);
 
-        assertEquals(sheltersUserResponseEntity.getBody(), user);
+        assertEquals(sheltersUserResponseEntity.getBody(), shelterUsers);
 
-        verify(userService, only()).editUser(user);
+        verify(userService, only()).editUser(shelterUsers);
     }
 
     @Test
