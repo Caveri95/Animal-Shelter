@@ -28,6 +28,7 @@ create table shelters_user
     name        varchar(255) not null,
     surname       varchar(255),
     phone_number       varchar(255)
+
 );
 
 
