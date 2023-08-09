@@ -32,7 +32,6 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         telegramBot.setUpdatesListener(this);
     }
 
-
     @Override
     public int process(List<Update> updates) {
         try {
