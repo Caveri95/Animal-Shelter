@@ -10,18 +10,18 @@ import javax.persistence.*;
 @EqualsAndHashCode
 @AllArgsConstructor
 @Entity
-public class Animals {
+public class Report {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private String typeAnimal;
-    private String breed;
-    private Boolean inShelter;
 
+    private String photo;
 
-    @Override
-    public String toString() {
-        return "Порода - " + breed;
-    }
+    private String reportTextUnderPhoto;
+
+    @OneToOne
+    @JoinColumn(name = "shelter_users_id")
+    private ShelterUsers shelterUsers;
+
 }
