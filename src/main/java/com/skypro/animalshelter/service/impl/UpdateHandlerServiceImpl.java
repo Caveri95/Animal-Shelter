@@ -4,6 +4,7 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
 import com.skypro.animalshelter.model.ShelterUsers;
 import com.skypro.animalshelter.repository.SheltersUserRepository;
+import com.skypro.animalshelter.service.ReportService;
 import com.skypro.animalshelter.service.UpdateHandlerService;
 import com.skypro.animalshelter.util.MessageSender;
 import org.springframework.stereotype.Service;
@@ -18,15 +19,17 @@ public class UpdateHandlerServiceImpl implements UpdateHandlerService {
     private final MenuServiceImpl menuService;
     private final SheltersUserRepository userRepository;
     private final MessageSender messageSender;
+    private final ReportService reportService;
 
     private final Pattern pattern = Pattern.compile("([А-я\\d.,!?:]+)\\s+([А-я\\d.,!?:]+)\\s+(\\+7\\d{10})");
 
 
-    public UpdateHandlerServiceImpl(TelegramBot telegramBot, MenuServiceImpl menuService, SheltersUserRepository userRepository, MessageSender messageSender) {
+    public UpdateHandlerServiceImpl(TelegramBot telegramBot, MenuServiceImpl menuService, SheltersUserRepository userRepository, MessageSender messageSender, ReportService reportService) {
         this.telegramBot = telegramBot;
         this.menuService = menuService;
         this.userRepository = userRepository;
         this.messageSender = messageSender;
+        this.reportService = reportService;
     }
 
     public void messageHandler(Update update) {
@@ -75,6 +78,8 @@ public class UpdateHandlerServiceImpl implements UpdateHandlerService {
                 messageSender.sendMessage(chatId, "Неккоректный формат сообщения!");
             }
 
+        } else if (update.message().photo() != null || update.message().caption() != null) {
+            reportService.postReport(chatId, update);
         }
 
 

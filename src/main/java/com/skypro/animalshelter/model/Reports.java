@@ -3,6 +3,7 @@ package com.skypro.animalshelter.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @NoArgsConstructor
 @Getter
@@ -10,13 +11,14 @@ import javax.persistence.*;
 @EqualsAndHashCode
 @AllArgsConstructor
 @Entity
-public class Report {
+public class Reports {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private String photo;
+    private LocalDate localDate;
 
     private String reportTextUnderPhoto;
 

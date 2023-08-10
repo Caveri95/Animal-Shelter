@@ -1,6 +1,5 @@
 package com.skypro.animalshelter.service.impl;
 
-import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.CallbackQuery;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import com.pengrad.telegrambot.request.SendMessage;
@@ -8,11 +7,11 @@ import com.skypro.animalshelter.model.ShelterInfo;
 import com.skypro.animalshelter.repository.ShelterInfoRepository;
 import com.skypro.animalshelter.service.ButtonReactionService;
 import com.skypro.animalshelter.service.MenuService;
+import com.skypro.animalshelter.service.ReportService;
+import com.skypro.animalshelter.service.TakeAnimal;
 import com.skypro.animalshelter.util.CallbackDataRequest;
 import com.skypro.animalshelter.util.KeyboardUtil;
 import com.skypro.animalshelter.util.MessageSender;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -22,21 +21,24 @@ import static com.skypro.animalshelter.util.CallbackDataRequest.*;
 @Service
 public class ButtonReactionServiceImpl implements ButtonReactionService {
 
-    private final TelegramBot telegramBot;
     private final MenuService menuService;
     private final KeyboardUtil keyboardUtil;
     private final MessageSender messageSender;
     private final ShelterInfoRepository shelterInfoRepository;
+    private final ReportService reportService;
+    private final TakeAnimal takeAnimal;
 
 
     private boolean isCat = false;
 
-    public ButtonReactionServiceImpl(TelegramBot telegramBot, MenuService menuService, KeyboardUtil keyboardUtil, MessageSender messageSender, ShelterInfoRepository shelterInfoRepository) {
-        this.telegramBot = telegramBot;
+    public ButtonReactionServiceImpl(MenuService menuService, KeyboardUtil keyboardUtil, MessageSender messageSender, ShelterInfoRepository shelterInfoRepository, ReportService reportService, TakeAnimal takeAnimal) {
         this.menuService = menuService;
         this.keyboardUtil = keyboardUtil;
         this.messageSender = messageSender;
         this.shelterInfoRepository = shelterInfoRepository;
+        this.reportService = reportService;
+
+        this.takeAnimal = takeAnimal;
     }
 
     @Override
@@ -57,23 +59,11 @@ public class ButtonReactionServiceImpl implements ButtonReactionService {
 
             case CAT:
                 isCat = true;
-
-                InlineKeyboardMarkup keyboard = keyboardUtil.setKeyboard(
-                        GENERAL_SHELTER_INFO,
-                        HOW_TO_TAKE_ANIMAL,
-                        REPORT_ANIMAL,
-                        VOLUNTEER);
-                return messageSender.sendMessageWithKeyboard(chatId, "Вы выбрали приют для кошек, чем могу помочь?", keyboard);
+                return menuService.getCatMenu(chatId);
 
             case DOG:
                 isCat = false;
-
-                InlineKeyboardMarkup keyboard1 = keyboardUtil.setKeyboard(    // Чтобы каждый раз по разному не называть можно в метод replyMarkup сразу вставлять или думать над классом клавиатуры
-                        GENERAL_SHELTER_INFO,
-                        HOW_TO_TAKE_ANIMAL,
-                        REPORT_ANIMAL,
-                        VOLUNTEER);
-                return messageSender.sendMessageWithKeyboard(chatId, "Вы выбрали приют для собак, чем могу помочь?", keyboard1);
+                return menuService.getDogMenu(chatId);
 
             case GENERAL_SHELTER_INFO:
                 return menuService.getInfoAboutShelter(chatId);
@@ -146,9 +136,20 @@ public class ButtonReactionServiceImpl implements ButtonReactionService {
                 if (shelterInfo.isPresent()) {
                     return messageSender.sendMessage(chatId, shelterInfo.get().getRefuseReasons());
                 }
+            case TAKE_CAT:
+            case TAKE_DOG:
+                return takeAnimal.takeAnimal(chatId, isCat);
+            case REPORT_ANIMAL:
+                if (reportService.checkIsFullReportPostToday()) {
+                    return messageSender.sendMessage(chatId, "Вы уже отправляли сегодня отчет по питомцу, наши волонтеры" +
+                            "посмотрят Ваш отчет");
+                }
+                return messageSender.sendMessage(chatId, "Отправьте фото животного, а под ним текст с - *Рацион животного.*\n" +
+                        "- *Общее самочувствие и привыкание к новому месту.*\n" +
+                        "- *Изменение в поведении: отказ от старых привычек, приобретение новых.*");
 
             default:
-                return messageSender.sendMessage(chatId, "Позвать волонтера");
+                return messageSender.sendMessage(chatId, "Такой команды нет, сообщите волонтеру о неисправности");
 
         }
     }
