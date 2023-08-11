@@ -6,8 +6,8 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.GetFile;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.response.GetFileResponse;
-import com.skypro.animalshelter.model.Reports;
-import com.skypro.animalshelter.model.ShelterUsers;
+import com.skypro.animalshelter.model.Report;
+import com.skypro.animalshelter.model.ShelterUser;
 import com.skypro.animalshelter.repository.ReportRepository;
 import com.skypro.animalshelter.repository.SheltersUserRepository;
 import com.skypro.animalshelter.service.ReportService;
@@ -41,10 +41,10 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public SendMessage postReport(Long chatId, Update update) {
 
-        Optional<ShelterUsers> user = userRepository.findSheltersUserByChatId(chatId);
+        Optional<ShelterUser> user = userRepository.findSheltersUserByChatId(chatId);
 
         if (user.isPresent()) {
-            Optional<Reports> reports = reportRepository.findByLocalDateEquals(LocalDate.now());
+            Optional<Report> reports = reportRepository.findByLocalDateEquals(LocalDate.now());
             if (reports.isPresent()) {
                 if (!Objects.isNull(reports.get().getPhoto()) && !Objects.isNull(reports.get().getReportTextUnderPhoto())) {
                     return messageSender.sendMessage(chatId, "Вы уже отправляли сегодня отчет по питомцу, наши волонтеры" +
@@ -53,12 +53,12 @@ public class ReportServiceImpl implements ReportService {
             }
         }
 
-        Reports newReports = new Reports();
+        Report newReport = new Report();
         String caption = update.message().caption();
 
-        newReports.setShelterUsers(user.get());
-        newReports.setReportTextUnderPhoto(caption);
-        newReports.setLocalDate(LocalDate.now());
+        newReport.setShelterUser(user.get());
+        newReport.setReportTextUnderPhoto(caption);
+        newReport.setLocalDate(LocalDate.now());
 
         PhotoSize photoSize = update.message().photo()[update.message().photo().length - 1];
         GetFileResponse getFileResponse = telegramBot.execute(new GetFile(photoSize.fileId()));
@@ -67,19 +67,19 @@ public class ReportServiceImpl implements ReportService {
                 String extension = StringUtils.getFilenameExtension(getFileResponse.file().filePath());
                 byte[] image = telegramBot.getFileContent(getFileResponse.file());
                 Path write = Files.write(Paths.get(UUID.randomUUID() + "." + extension), image);
-                newReports.setPhoto(write.toString());
+                newReport.setPhoto(write.toString());
 
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
 
-        if (Objects.isNull(newReports.getPhoto()) || Objects.isNull(newReports.getReportTextUnderPhoto())) {
+        if (Objects.isNull(newReport.getPhoto()) || Objects.isNull(newReport.getReportTextUnderPhoto())) {
             return messageSender.sendMessage(chatId, "Нужно ФОТО и ОПИСАНИЕ под ним Дорогой усыновитель, мы заметили, что ты заполняешь " +
                     "отчет не так подробно, как необходимо. Пожалуйста, подойди ответственнее к этому занятию. " +
                     "В противном случае волонтеры приюта будут обязаны самолично проверять условия содержания животного");
         }
-        reportRepository.save(newReports);
+        reportRepository.save(newReport);
 
         return messageSender.sendMessage(chatId, "Отчет добавлен, не забывайте отправлять отчеты о вашем питомце ежедневно");
 
@@ -89,7 +89,7 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public Boolean checkIsFullReportPostToday() {
 
-        Optional<Reports> reports = reportRepository.findByLocalDateEquals(LocalDate.now());
+        Optional<Report> reports = reportRepository.findByLocalDateEquals(LocalDate.now());
         if (reports.isPresent()) {
             if (!reports.get().getPhoto().isEmpty() && !reports.get().getReportTextUnderPhoto().isEmpty()) {
                 return true;

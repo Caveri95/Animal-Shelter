@@ -1,14 +1,15 @@
 package com.skypro.animalshelter.service.impl;
 
 import com.pengrad.telegrambot.request.SendMessage;
-import com.skypro.animalshelter.model.Animals;
-import com.skypro.animalshelter.model.ShelterUsers;
+import com.skypro.animalshelter.model.Animal;
+import com.skypro.animalshelter.model.ShelterUser;
 import com.skypro.animalshelter.repository.AnimalRepository;
 import com.skypro.animalshelter.repository.SheltersUserRepository;
 import com.skypro.animalshelter.service.TakeAnimal;
 import com.skypro.animalshelter.util.MessageSender;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -37,31 +38,31 @@ public class TakeAnimalImpl implements TakeAnimal {
         }
 
         if (userRepository.findSheltersUserByChatId(chatId).isPresent()) {
-            if (userRepository.findSheltersUserByChatId(chatId).get().getAnimals() != null) {
+            if (userRepository.findSheltersUserByChatId(chatId).get().getAnimal() != null) {
                 return messageSender.sendMessage(chatId, "Больше одного животного в нашем приюте брать нельзя");
             }
 
-            ShelterUsers user = userRepository.findSheltersUserByChatId(chatId).get();
+            ShelterUser user = userRepository.findSheltersUserByChatId(chatId).get();
             if (isCat) {
-                Optional<Animals> cat = animalRepository.findAnimalByTypeAnimal(CAT.getCallbackData()).stream().filter(Animals::getInShelter).findAny();
+                Optional<Animal> cat = animalRepository.findAnimalByTypeAnimal(CAT.getCallbackData()).stream().filter(Animal::getInShelter).findAny();
                 if (cat.isEmpty()) {
                     return messageSender.sendMessage(chatId, "Извините, сейчас в приюте нет котов");
                 }
-                user.setAnimals(cat.get());
+                user.setAnimal(cat.get());
                 cat.get().setInShelter(false);
                 animalRepository.save(cat.get());
 
 
             } else {
-                Optional<Animals> dog = animalRepository.findAnimalByTypeAnimal(DOG.getCallbackData()).stream().filter(Animals::getInShelter).findAny();
+                Optional<Animal> dog = animalRepository.findAnimalByTypeAnimal(DOG.getCallbackData()).stream().filter(Animal::getInShelter).findAny();
                 if (dog.isEmpty()) {
                     return messageSender.sendMessage(chatId, "Извините, сейчас в приюте нет собак");
                 }
-                user.setAnimals(dog.get());
+                user.setAnimal(dog.get());
                 dog.get().setInShelter(false);
                 animalRepository.save(dog.get());
             }
-            user.setDataAdopt(LocalDateTime.now());
+            user.setDataAdopt(LocalDate.now());
             userRepository.save(user);
         }
         return messageSender.sendMessage(chatId, "Поздравляем! Вы приютили себя питомца, не забывайте отправлять " +

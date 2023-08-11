@@ -1,6 +1,6 @@
 package com.skypro.animalshelter.service.impl;
 
-import com.skypro.animalshelter.model.ShelterUsers;
+import com.skypro.animalshelter.model.ShelterUser;
 import com.skypro.animalshelter.repository.SheltersUserRepository;
 import org.springframework.stereotype.Service;
 
@@ -16,19 +16,19 @@ public class SheltersUserService {
     }
 
 
-    public List<ShelterUsers> getAllUsers() {
+    public List<ShelterUser> getAllUsers() {
         return userRepository.findAll();
     }
 
-    public ShelterUsers createUser(ShelterUsers shelterUsers) {
-        userRepository.save(shelterUsers);
-        return shelterUsers;
+    public ShelterUser createUser(ShelterUser shelterUser) {
+        userRepository.save(shelterUser);
+        return shelterUser;
     }
 
-    public ShelterUsers editUser(ShelterUsers shelterUsers) {
-        if (userRepository.findById(shelterUsers.getId()).isPresent()) {
-            userRepository.save(shelterUsers);
-            return shelterUsers;
+    public ShelterUser editUser(ShelterUser shelterUser) {
+        if (userRepository.findById(shelterUser.getId()).isPresent()) {
+            userRepository.save(shelterUser);
+            return shelterUser;
         } else {
             return null;
         }

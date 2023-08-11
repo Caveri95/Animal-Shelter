@@ -2,7 +2,7 @@ package com.skypro.animalshelter.service.impl;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
-import com.skypro.animalshelter.model.ShelterUsers;
+import com.skypro.animalshelter.model.ShelterUser;
 import com.skypro.animalshelter.repository.SheltersUserRepository;
 import com.skypro.animalshelter.service.ReportService;
 import com.skypro.animalshelter.service.UpdateHandlerService;
@@ -58,14 +58,14 @@ public class UpdateHandlerServiceImpl implements UpdateHandlerService {
                 String phoneNumber = matcher.group(3);
 
                 if (userRepository.findSheltersUserByChatId(chatId).isPresent()) {
-                    ShelterUsers user = userRepository.findSheltersUserByChatId(chatId).get();
+                    ShelterUser user = userRepository.findSheltersUserByChatId(chatId).get();
                     user.setChatId(chatId);
                     user.setName(name);
                     user.setSurname(surname);
                     user.setPhoneNumber(phoneNumber);
                     userRepository.save(user);
                 } else {
-                    ShelterUsers user = new ShelterUsers();
+                    ShelterUser user = new ShelterUser();
                     user.setChatId(chatId);
                     user.setName(name);
                     user.setSurname(surname);

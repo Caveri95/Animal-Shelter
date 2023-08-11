@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @EqualsAndHashCode
 @AllArgsConstructor
 @Entity
-public class Reports {
+public class Report {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +24,6 @@ public class Reports {
 
     @OneToOne
     @JoinColumn(name = "shelter_users_id")
-    private ShelterUsers shelterUsers;
+    private ShelterUser shelterUser;
 
 }

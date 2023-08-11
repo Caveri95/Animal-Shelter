@@ -6,14 +6,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @NoArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode
 @Entity
-public class ShelterUsers {
+public class ShelterUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,23 +21,22 @@ public class ShelterUsers {
     private String name;
     private String surname;
     private String phoneNumber;
-    private LocalDateTime dataAdopt;
+    private LocalDate dataAdopt;
     private long chatId;
     @OneToOne
     @JoinColumn(name = "animal_id")
-    private Animals animals;
+    private Animal animal;
 
 
-    public ShelterUsers(long id, String name, String surname, String phoneNumber) {
+    public ShelterUser(long id, String name, String surname, String phoneNumber, LocalDate dataAdopt, long chatId, Animal animal) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.phoneNumber = phoneNumber;
+        this.dataAdopt = dataAdopt;
+        this.chatId = chatId;
+        this.animal = animal;
     }
-
-
-
-
 
     @Override
     public String toString() {

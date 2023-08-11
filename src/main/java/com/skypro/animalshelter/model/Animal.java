@@ -10,7 +10,7 @@ import javax.persistence.*;
 @EqualsAndHashCode
 @AllArgsConstructor
 @Entity
-public class Animals {
+public class Animal {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
