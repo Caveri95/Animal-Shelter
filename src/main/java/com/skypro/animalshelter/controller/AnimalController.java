@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/animal")
+@Tag(name = "Животные приюта", description = "CRUD операции и др.эндпоинты для работы с животными")
 public class AnimalController {
 
     private final AnimalService animalService;
@@ -103,6 +105,6 @@ public class AnimalController {
         if (animalService.deleteAnimalById(id)) {
             return ResponseEntity.ok().build();
         }
-        return ResponseEntity.badRequest().build();
+        return ResponseEntity.notFound().build();
     }
 }

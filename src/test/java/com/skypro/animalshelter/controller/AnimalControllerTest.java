@@ -3,7 +3,6 @@ package com.skypro.animalshelter.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.skypro.animalshelter.model.Animal;
 import com.skypro.animalshelter.service.AnimalService;
-import com.skypro.animalshelter.service.impl.SheltersUserService;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,7 +14,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -108,6 +106,14 @@ public class AnimalControllerTest {
         when(animalService.deleteAnimalById(anyLong())).thenReturn(true);
         mvc.perform(delete("/animal/{id}", anyLong()))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("Удаление животного с ошибкой")
+    void shouldReturnNotFoundWhenDeleteAnimalByIdCalled() throws Exception {
+        when(animalService.deleteAnimalById(1L)).thenReturn(false);
+        mvc.perform(delete("/users/{id}", 1L))
+                .andExpect(status().isNotFound());
     }
 
 

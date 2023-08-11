@@ -20,6 +20,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -96,6 +97,42 @@ public class ReportServiceImpl implements ReportService {
             }
         }
         return false;
+    }
+
+    @Override
+    public Report createReport(Report report) {
+        reportRepository.save(report);
+        return report;
+    }
+
+    @Override
+    public Report editReport(Report report) {
+        if (reportRepository.findById(report.getId()).isPresent()) {
+            reportRepository.save(report);
+            return report;
+        } else {
+            return null;
+        }
+    }
+    @Override
+    public Report findReportById(Long id) {
+        Optional<Report> report = reportRepository.findById(id);
+        return report.orElse(null);
+    }
+
+    @Override
+    public List<Report> getAllReports() {
+        return reportRepository.findAll();
+    }
+
+    @Override
+    public boolean deleteReportById(Long id) {
+        if (reportRepository.findById(id).isPresent()) {
+            reportRepository.deleteById(id);
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

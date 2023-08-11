@@ -3,14 +3,13 @@ package com.skypro.animalshelter.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.skypro.animalshelter.model.Animal;
 import com.skypro.animalshelter.model.ShelterUser;
-import com.skypro.animalshelter.service.impl.SheltersUserService;
+import com.skypro.animalshelter.service.impl.SheltersUserServiceImpl;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -30,7 +29,7 @@ public class SheltersUserControllerTest {
     private MockMvc mvc;
 
     @MockBean
-    private SheltersUserService sheltersUserService;
+    private SheltersUserServiceImpl sheltersUserServiceImpl;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -47,7 +46,7 @@ public class SheltersUserControllerTest {
     @DisplayName("Добавление пользователя")
     void shouldReturnShelterUserWhenAddUserCalled() throws Exception {
 
-        when(sheltersUserService.createUser(user)).thenReturn(user);
+        when(sheltersUserServiceImpl.createUser(user)).thenReturn(user);
 
         mvc.perform(MockMvcRequestBuilders.post("/users")
                         .content(objectMapper.writeValueAsString(user))
@@ -61,14 +60,14 @@ public class SheltersUserControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.animal").value(animal))
                 .andExpect(status().isOk());
 
-        verify(sheltersUserService, only()).createUser(user);
+        verify(sheltersUserServiceImpl, only()).createUser(user);
 
     }
 
     @Test
     @DisplayName("Вывод всех пользователей")
     void shouldReturnShelterUserListWhenGetAllUserCalled() throws Exception {
-        when(sheltersUserService.getAllUsers()).thenReturn(USERS_LIST);
+        when(sheltersUserServiceImpl.getAllUsers()).thenReturn(USERS_LIST);
         mvc.perform(MockMvcRequestBuilders.get("/users")
                         .content(objectMapper.writeValueAsString(USERS_LIST))
                         .contentType(MediaType.APPLICATION_JSON))
@@ -79,18 +78,18 @@ public class SheltersUserControllerTest {
     @Test
     @DisplayName("Вывод пользователя по его id")
     void shouldReturnShelterUserWhenFindByIdCalled() throws Exception {
-        when(sheltersUserService.findUserById(anyLong())).thenReturn(user);
+        when(sheltersUserServiceImpl.findUserById(anyLong())).thenReturn(user);
         mvc.perform(MockMvcRequestBuilders.get("/users/{id}", user.getId()))
                 .andExpect(status().isOk());
 
-        verify(sheltersUserService, only()).findUserById(user.getId());
+        verify(sheltersUserServiceImpl, only()).findUserById(user.getId());
     }
 
     @Test
     @DisplayName("Редактирование пользователя")
     void shouldReturnUserWhenEditUserCalled() throws Exception {
 
-        when(sheltersUserService.editUser(user)).thenReturn(user);
+        when(sheltersUserServiceImpl.editUser(user)).thenReturn(user);
 
         mvc.perform(MockMvcRequestBuilders.put("/users")
                         .content(objectMapper.writeValueAsString(user))
@@ -104,7 +103,7 @@ public class SheltersUserControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.animal").value(animal))
                 .andExpect(status().isOk());
 
-        verify(sheltersUserService, only()).editUser(user);
+        verify(sheltersUserServiceImpl, only()).editUser(user);
 
     }
 
@@ -113,7 +112,7 @@ public class SheltersUserControllerTest {
     @Test
     @DisplayName("Удаление пользователя без ошибок")
     void shouldReturnOkWhenDeleteUserByIdCalled() throws Exception {
-        when(sheltersUserService.deleteUserById(user.getId())).thenReturn(true);
+        when(sheltersUserServiceImpl.deleteUserById(user.getId())).thenReturn(true);
         mvc.perform(delete("/users/{id}", user.getId()))
                 .andExpect(status().isOk());
     }
@@ -121,7 +120,7 @@ public class SheltersUserControllerTest {
     @Test
     @DisplayName("Удаление пользователя с ошибкой")
     void shouldReturnNotFoundWhenDeleteUserByIdCalled() throws Exception {
-        when(sheltersUserService.deleteUserById(user.getId())).thenReturn(false);
+        when(sheltersUserServiceImpl.deleteUserById(user.getId())).thenReturn(false);
         mvc.perform(delete("/users/{id}", anyLong()))
                 .andExpect(status().isBadRequest());
     }

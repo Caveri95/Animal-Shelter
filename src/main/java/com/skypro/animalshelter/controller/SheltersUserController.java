@@ -1,13 +1,14 @@
 package com.skypro.animalshelter.controller;
 
 import com.skypro.animalshelter.model.ShelterUser;
-import com.skypro.animalshelter.service.impl.SheltersUserService;
+import com.skypro.animalshelter.service.impl.SheltersUserServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,11 +16,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/users")
+@Tag(name = "Пользователи приюта", description = "CRUD операции и др.эндпоинты для работы с пользователями")
 public class SheltersUserController {
 
-    private final SheltersUserService userService;
+    private final SheltersUserServiceImpl userService;
 
-    public SheltersUserController(SheltersUserService userService) {
+    public SheltersUserController(SheltersUserServiceImpl userService) {
         this.userService = userService;
     }
 
