@@ -6,6 +6,7 @@ import com.skypro.animalshelter.service.AnimalService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AnimalServiceImpl implements AnimalService {
@@ -36,6 +37,11 @@ public class AnimalServiceImpl implements AnimalService {
         } else {
             return null;
         }
+    }
+@Override
+    public Animal findAnimalById(Long id) {
+        Optional<Animal> animal = animalRepository.findById(id);
+        return animal.orElse(null);
     }
 
     @Override

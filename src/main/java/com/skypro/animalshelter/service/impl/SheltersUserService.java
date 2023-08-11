@@ -5,6 +5,7 @@ import com.skypro.animalshelter.repository.SheltersUserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SheltersUserService {
@@ -23,6 +24,11 @@ public class SheltersUserService {
     public ShelterUser createUser(ShelterUser shelterUser) {
         userRepository.save(shelterUser);
         return shelterUser;
+    }
+
+    public ShelterUser findUserById(Long id) {
+        Optional<ShelterUser> user = userRepository.findById(id);
+        return user.orElse(null);
     }
 
     public ShelterUser editUser(ShelterUser shelterUser) {

@@ -1,6 +1,7 @@
 package com.skypro.animalshelter.controller;
 
 import com.skypro.animalshelter.model.Animal;
+import com.skypro.animalshelter.model.ShelterUser;
 import com.skypro.animalshelter.service.AnimalService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("animals")
+@RequestMapping("/animal")
 public class AnimalController {
 
     private final AnimalService animalService;
@@ -50,6 +51,25 @@ public class AnimalController {
         return ResponseEntity.ok(animals);
     }
 
+    @GetMapping("/{id}")
+    @Operation(summary = "Получить животного по его id", description = "Введите id животного")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Животное получен", content = {
+                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = ShelterUser.class)))}),
+            @ApiResponse(responseCode = "400", description = "Параметры запроса отсутствуют или имеют некорректный формат"),
+            @ApiResponse(responseCode = "404", description = "Животное не найден"),
+            @ApiResponse(responseCode = "500", description = "Произошла ошибка, не зависящая от вызывающей стороны")
+    })
+    public ResponseEntity<Animal> getAnimalById(@PathVariable long id) {
+
+        Animal animalById = animalService.findAnimalById(id);
+        if (animalById == null) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(animalById);
+        }
+    }
+
     @PutMapping
     @Operation(summary = "Отредактировать животного", description = "Введите id животного и его данные")
     @ApiResponses(value = {
@@ -69,7 +89,7 @@ public class AnimalController {
         }
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     @Operation(summary = "Удалить животное из базы данных", description = "Необходимо указать id животного, которого нужно удалить")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Животное удалено", content = {
@@ -78,7 +98,7 @@ public class AnimalController {
             @ApiResponse(responseCode = "500", description = "Произошла ошибка, не зависящая от вызывающей стороны")
 
     })
-    public ResponseEntity<Void> deleteAnimal(@RequestParam("id животного") Long id) {
+    public ResponseEntity<Void> deleteAnimal(@PathVariable long id) {
 
         if (animalService.deleteAnimalById(id)) {
             return ResponseEntity.ok().build();

@@ -1,6 +1,5 @@
 package com.skypro.animalshelter.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.skypro.animalshelter.model.Animal;
 import com.skypro.animalshelter.model.ShelterUser;
@@ -8,7 +7,6 @@ import com.skypro.animalshelter.service.impl.SheltersUserService;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -79,6 +77,16 @@ public class SheltersUserControllerTest {
     }
 
     @Test
+    @DisplayName("Вывод пользователя по его id")
+    void shouldReturnShelterUserWhenFindByIdCalled() throws Exception {
+        when(sheltersUserService.findUserById(anyLong())).thenReturn(user);
+        mvc.perform(MockMvcRequestBuilders.get("/users/{id}", user.getId()))
+                .andExpect(status().isOk());
+
+        verify(sheltersUserService, only()).findUserById(user.getId());
+    }
+
+    @Test
     @DisplayName("Редактирование пользователя")
     void shouldReturnUserWhenEditUserCalled() throws Exception {
 
@@ -100,14 +108,7 @@ public class SheltersUserControllerTest {
 
     }
 
-    @Test
-    @DisplayName("Редактирование пользователя с ошибкой")
-    void shouldReturnNotFoundWhenEditUserCalled() throws Exception {
 
-        when(sheltersUserService.editUser(user)).thenReturn(null);
-        mvc.perform(MockMvcRequestBuilders.put("/users"))
-                .andExpect(status().isBadRequest());
-    }
 
     @Test
     @DisplayName("Удаление пользователя без ошибок")

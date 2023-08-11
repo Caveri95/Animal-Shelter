@@ -50,6 +50,25 @@ public class SheltersUserController {
         return ResponseEntity.ok(allShelterUsers);
     }
 
+    @GetMapping("/{id}")
+    @Operation(summary = "Получить пользователя по его id", description = "Введите id пользователя")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Пользователь получен", content = {
+                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = ShelterUser.class)))}),
+            @ApiResponse(responseCode = "400", description = "Параметры запроса отсутствуют или имеют некорректный формат"),
+            @ApiResponse(responseCode = "404", description = "Пользователь не найден"),
+            @ApiResponse(responseCode = "500", description = "Произошла ошибка, не зависящая от вызывающей стороны")
+    })
+    public ResponseEntity<ShelterUser> getUserById(@PathVariable long id) {
+
+        ShelterUser sheltersShelterUser = userService.findUserById(id);
+        if (sheltersShelterUser == null) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(sheltersShelterUser);
+        }
+    }
+
     @PutMapping
     @Operation(summary = "Отредактировать данные пользователя", description = "Введите id пользователя и его данные")
     @ApiResponses(value = {
@@ -63,7 +82,7 @@ public class SheltersUserController {
 
         ShelterUser sheltersShelterUser = userService.editUser(shelterUser);
         if (sheltersShelterUser == null) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.ok(sheltersShelterUser);
         }
