@@ -24,21 +24,55 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public SendMessage getStartMenuShelter(Long chatId) {
+    public SendMessage getFirstStartMenuShelter(Long chatId) {
 
         InlineKeyboardMarkup keyboard = keyboardUtil.setKeyboard(CAT, DOG);
 
-        SendMessage sendMessage = new SendMessage(chatId, "Привет, выбери приют").replyMarkup(keyboard);
+        SendMessage sendMessage = new SendMessage(chatId, "Привет, (тут мини приветствие от приюта для первый раз зашедшего)" +
+                " вы находитесь в меню выбора приюта для кошек или " +
+                "собак, пожалуйста, выбери приют, о котором хотите узнать").replyMarkup(keyboard);
         telegramBot.execute(sendMessage);
         return sendMessage;
     }
 
+    @Override
+    public SendMessage getStartMenuShelter(Long chatId) {
+
+        InlineKeyboardMarkup keyboard = keyboardUtil.setKeyboard(CAT, DOG);
+
+        SendMessage sendMessage = new SendMessage(chatId, "Рады видеть Вас снова! Выберите приют").replyMarkup(keyboard);
+        telegramBot.execute(sendMessage);
+        return sendMessage;
+    }
+
+    @Override
+    public SendMessage getCatMenu(Long chatId) {
+        InlineKeyboardMarkup keyboard = keyboardUtil.setKeyboard(
+                GENERAL_SHELTER_INFO,
+                HOW_TO_TAKE_ANIMAL,
+                REPORT_ANIMAL,
+                TAKE_CAT,
+                VOLUNTEER);
+        return messageSender.sendMessageWithKeyboard(chatId, "Вы выбрали приют для кошек, чем могу помочь?", keyboard);
+    }
+
+    @Override
+    public SendMessage getDogMenu(Long chatId) {
+
+        InlineKeyboardMarkup keyboard1 = keyboardUtil.setKeyboard(
+                GENERAL_SHELTER_INFO,
+                HOW_TO_TAKE_ANIMAL,
+                REPORT_ANIMAL,
+                TAKE_DOG,
+                VOLUNTEER);
+        return messageSender.sendMessageWithKeyboard(chatId, "Вы выбрали приют для собак, чем могу помочь?", keyboard1);
+    }
 
     @Override
     public SendMessage getInfoAboutShelter(Long chatId) {
 
         InlineKeyboardMarkup inlineKeyboardMarkup = keyboardUtil.setKeyboard(
-                ABOUT_SHELTER,                                             // тут нужно выводить разную информацию в зависимости от выбранного приюта
+                ABOUT_SHELTER,
                 CONTACT_SHELTER,
                 SAFETY_CONTACT_FOR_CAR_PASS,
                 SAFETY_IN_SHELTER_TERRITORY,

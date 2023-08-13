@@ -3,6 +3,8 @@ package com.skypro.animalshelter.util;
 public enum CallbackDataRequest {
 
     CAT("Приют для котов", "CAT"),
+    TAKE_CAT("Взять кота", "TAKE_CAT"),
+    TAKE_DOG("Взять собаку", "TAKE_DOG"),
     DOG("Приют для собак", "DOG"),
     GENERAL_SHELTER_INFO("Информация о приюте", "GENERAL_SHELTER_INFO"),
     HOW_TO_TAKE_ANIMAL("Как взять животное с приюта", "HOW_TO_TAKE_ANIMAL"),
