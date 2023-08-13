@@ -64,7 +64,13 @@ public class ReportControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.photo").value("photoPath1"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.localDate").value(LocalDate.now().toString()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.reportTextUnderPhoto").value("textUnderFoto1"))
-                //.andExpect(MockMvcResultMatchers.jsonPath("$.shelterUser").value(user))    Не понятно почему не видит юзера
+                .andExpect(MockMvcResultMatchers.jsonPath("$.shelterUser.id").value(6L))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.shelterUser.name").value("editName"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.shelterUser.surname").value("editSurname"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.shelterUser.phoneNumber").value("+79210000000"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.shelterUser.dataAdopt").value(LocalDate.now().toString()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.shelterUser.chatId").value(1L))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.shelterUser.animal").value(animal))
                 .andExpect(status().isOk());
 
         verify(reportService, only()).createReport(report);
@@ -84,7 +90,13 @@ public class ReportControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.photo").value("photoPath1"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.localDate").value(LocalDate.now().toString()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.reportTextUnderPhoto").value("textUnderFoto1"))
-                //.andExpect(MockMvcResultMatchers.jsonPath("$.shelterUser").value(user))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.shelterUser.id").value(6L))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.shelterUser.name").value("editName"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.shelterUser.surname").value("editSurname"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.shelterUser.phoneNumber").value("+79210000000"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.shelterUser.dataAdopt").value(LocalDate.now().toString()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.shelterUser.chatId").value(1L))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.shelterUser.animal").value(animal))
                 .andExpect(status().isOk());
 
         verify(reportService, only()).editReport(report);
