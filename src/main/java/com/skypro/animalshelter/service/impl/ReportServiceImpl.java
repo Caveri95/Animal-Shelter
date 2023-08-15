@@ -6,12 +6,14 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.GetFile;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.response.GetFileResponse;
+import com.skypro.animalshelter.exception.ReportNotFoundException;
 import com.skypro.animalshelter.model.Report;
 import com.skypro.animalshelter.model.ShelterUser;
 import com.skypro.animalshelter.repository.ReportRepository;
 import com.skypro.animalshelter.repository.SheltersUserRepository;
 import com.skypro.animalshelter.service.ReportService;
 import com.skypro.animalshelter.util.MessageSender;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -20,10 +22,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ReportServiceImpl implements ReportService {
@@ -57,7 +58,7 @@ public class ReportServiceImpl implements ReportService {
         Report newReport = new Report();
         String caption = update.message().caption();
 
-        newReport.setShelterUser(user.get());
+        user.ifPresent(newReport::setShelterUser);
         newReport.setReportTextUnderPhoto(caption);
         newReport.setLocalDate(LocalDate.now());
 
@@ -83,8 +84,51 @@ public class ReportServiceImpl implements ReportService {
         reportRepository.save(newReport);
 
         return messageSender.sendMessage(chatId, "Отчет добавлен, не забывайте отправлять отчеты о вашем питомце ежедневно");
+    }
 
+    @Scheduled(cron = "0 00 21 * * *") //напоминания каждый день, если до 21 отчет так и не был прислан
+    public void reportReminder() {
 
+        List<Long> usersId = userRepository.findAll().stream().filter(shelterUser -> shelterUser.getDataAdopt() != null).map(ShelterUser::getId).toList();
+        for (Long id : usersId) {
+
+            Optional<Report> report = reportRepository.findByShelterUserId(id).stream().sorted(Comparator.comparing(Report::getLocalDate)).reduce((first, second) -> second);
+            if (report.isPresent()) {
+                if (report.get().getLocalDate().isAfter(report.get().getLocalDate().plusDays(1))) {
+                    messageSender.sendMessage(report.get().getShelterUser().getChatId(), "Напоминаю о необходимости присылать отчеты каждый день о жизни вашего питомца");
+                }
+            }
+        }
+    }
+
+    @Scheduled(cron = "0 00 21 * * *") //напоминание в 21 если уже 2 дня не было отчетов
+    public void reportReminderTwoDaysNoReport() {
+
+        List<Long> usersId = userRepository.findAll().stream().filter(shelterUser -> shelterUser.getDataAdopt() != null).map(ShelterUser::getId).toList();
+        for (Long id : usersId) {
+
+            Optional<Report> report = reportRepository.findByShelterUserId(id).stream().sorted(Comparator.comparing(Report::getLocalDate)).reduce((first, second) -> second);
+            if (report.isPresent()) {
+                if (report.get().getLocalDate().isAfter(report.get().getLocalDate().plusDays(2))) {
+                    messageSender.sendMessage(report.get().getShelterUser().getChatId(), "Вы не присылали отчет уже 2 дня, с вами свяжется наш волонтер");
+                }
+            }
+        }
+    }
+
+    @Scheduled(cron = "0 00 12 * * *") //когда прошло 30 дней и решение от волонтеров положительное
+    public void probationSolution() {
+
+        List<Long> usersId = userRepository.findAll().stream().filter(shelterUser -> shelterUser.getDataAdopt() != null).map(ShelterUser::getId).toList();
+        for (Long id : usersId) {
+
+            Optional<Report> report = reportRepository.findByShelterUserId(id).stream().sorted(Comparator.comparing(Report::getLocalDate)).reduce((first, second) -> second);
+            if (report.isPresent()) {
+                if (report.get().getLocalDate().isAfter(report.get().getLocalDate().plusMonths(1))) {
+                    messageSender.sendMessage(report.get().getShelterUser().getChatId(), "Поздравляю! Вы прошли испытательный срок и можете оставить питомца себе");
+                }
+            }
+        }
     }
 
     @Override
@@ -111,13 +155,13 @@ public class ReportServiceImpl implements ReportService {
             reportRepository.save(report);
             return report;
         } else {
-            return null;
+            throw new ReportNotFoundException();
         }
     }
     @Override
     public Report findReportById(Long id) {
-        Optional<Report> report = reportRepository.findById(id);
-        return report.orElse(null);
+
+        return reportRepository.findById(id).orElseThrow(ReportNotFoundException::new);
     }
 
     @Override
@@ -131,8 +175,7 @@ public class ReportServiceImpl implements ReportService {
             reportRepository.deleteById(id);
             return true;
         } else {
-            return false;
+            throw new ReportNotFoundException();
         }
     }
-
 }

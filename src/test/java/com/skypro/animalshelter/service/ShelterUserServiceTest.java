@@ -21,7 +21,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class ShelterShelterUserServiceServiceTest {
+public class ShelterUserServiceTest {
 
     @Mock
     private SheltersUserRepository userRepository;
@@ -57,7 +57,7 @@ public class ShelterShelterUserServiceServiceTest {
     }
 
     @Test
-    @DisplayName("Создзание пользователя")
+    @DisplayName("Создание пользователя")
     void shouldReturnUserWhenCreateUserCalled() {
         when(userService.createUser(testShelterUser)).thenReturn(testShelterUser);
 

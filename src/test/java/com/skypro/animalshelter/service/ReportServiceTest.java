@@ -75,10 +75,7 @@ public class ReportServiceTest {
 
         when(reportRepository.findById(anyLong())).thenReturn(Optional.of(report));
 
-
-
        assertEquals(reportService.editReport(report), report);
-
     }
 
     @Test
