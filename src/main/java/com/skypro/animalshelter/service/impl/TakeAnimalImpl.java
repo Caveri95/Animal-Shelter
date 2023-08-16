@@ -2,7 +2,8 @@ package com.skypro.animalshelter.service.impl;
 
 import com.pengrad.telegrambot.request.SendMessage;
 import com.skypro.animalshelter.model.Animal;
-import com.skypro.animalshelter.model.ShelterUser;
+import com.skypro.animalshelter.model.SheltersUser;
+import com.skypro.animalshelter.model.ShelterUserType;
 import com.skypro.animalshelter.repository.AnimalRepository;
 import com.skypro.animalshelter.repository.SheltersUserRepository;
 import com.skypro.animalshelter.service.TakeAnimal;
@@ -10,7 +11,6 @@ import com.skypro.animalshelter.util.MessageSender;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static com.skypro.animalshelter.util.CallbackDataRequest.CAT;
@@ -42,7 +42,7 @@ public class TakeAnimalImpl implements TakeAnimal {
                 return messageSender.sendMessage(chatId, "Больше одного животного в нашем приюте брать нельзя");
             }
 
-            ShelterUser user = userRepository.findSheltersUserByChatId(chatId).get();
+            SheltersUser user = userRepository.findSheltersUserByChatId(chatId).get();
             if (isCat) {
                 Optional<Animal> cat = animalRepository.findAnimalByTypeAnimal(CAT.getCallbackData()).stream().filter(Animal::getInShelter).findAny();
                 if (cat.isEmpty()) {
@@ -63,6 +63,7 @@ public class TakeAnimalImpl implements TakeAnimal {
                 animalRepository.save(dog.get());
             }
             user.setDataAdopt(LocalDate.now());
+            user.setUserType(ShelterUserType.PROBATION);
             userRepository.save(user);
         }
         return messageSender.sendMessage(chatId, "Поздравляем! Вы приютили себя питомца, не забывайте отправлять " +

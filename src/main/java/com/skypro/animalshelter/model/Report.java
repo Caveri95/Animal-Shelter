@@ -24,6 +24,6 @@ public class Report {
 
     @OneToOne
     @JoinColumn(name = "shelter_users_id")
-    private ShelterUser shelterUser;
+    private SheltersUser sheltersUser;
 
 }

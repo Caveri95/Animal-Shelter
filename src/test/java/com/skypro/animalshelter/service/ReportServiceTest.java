@@ -2,12 +2,9 @@ package com.skypro.animalshelter.service;
 
 import com.skypro.animalshelter.model.Animal;
 import com.skypro.animalshelter.model.Report;
-import com.skypro.animalshelter.model.ShelterUser;
+import com.skypro.animalshelter.model.SheltersUser;
 import com.skypro.animalshelter.repository.ReportRepository;
-import com.skypro.animalshelter.service.impl.AnimalServiceImpl;
 import com.skypro.animalshelter.service.impl.ReportServiceImpl;
-import liquibase.pro.packaged.R;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,6 +16,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import static com.skypro.animalshelter.model.ShelterUserType.JUST_LOOKING;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
@@ -32,7 +30,7 @@ public class ReportServiceTest {
     private ReportServiceImpl reportService;
 
     static Animal animal = new Animal(1L, "CAT", "Британец", true);
-    static ShelterUser user = new ShelterUser(6, "editName", "editSurname", "+79210000000", LocalDate.now(), 1L, animal);
+    static SheltersUser user = new SheltersUser(6, "editName", "editSurname", "+79210000000", LocalDate.now(), 1L, animal, JUST_LOOKING);
 
     Report report = new Report(1L, "photoPath", LocalDate.now(), "textPhoto", user);
 
@@ -66,7 +64,7 @@ public class ReportServiceTest {
     void shouldReturnReportWhenCreateReportCalled() {
         when(reportService.createReport(report)).thenReturn(report);
 
-        assertEquals(reportService.createReport(report), report);
+        assertEquals(report, reportService.createReport(report));
     }
 
     @Test
@@ -75,7 +73,7 @@ public class ReportServiceTest {
 
         when(reportRepository.findById(anyLong())).thenReturn(Optional.of(report));
 
-       assertEquals(reportService.editReport(report), report);
+       assertEquals(report, reportService.editReport(report));
     }
 
     @Test

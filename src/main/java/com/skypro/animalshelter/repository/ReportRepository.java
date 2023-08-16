@@ -12,6 +12,6 @@ public interface ReportRepository extends JpaRepository<Report, Long> {
 
     Optional<Report> findByLocalDateEquals(LocalDate date);
 
-    List<Report> findByShelterUserId(Long id);
+    List<Report> findBySheltersUserId(Long id);
 
 }

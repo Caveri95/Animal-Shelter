@@ -40,7 +40,7 @@ class MessageSenderTest {
 
         when(messageSender.sendMessage(anyLong(), anyString())).thenReturn(sendMessage);
 
-        assertEquals(messageSender.sendMessage(id, text), sendMessage);
+        assertEquals(sendMessage, messageSender.sendMessage(id, text));
     }
 
     @Test
