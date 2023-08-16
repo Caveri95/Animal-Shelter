@@ -108,6 +108,7 @@ public class ReportServiceImpl implements ReportService {
     public void reportReminderTwoDaysNoReport() {
 
         List<Long> usersId = userRepository.findAll().stream().filter(shelterUser -> shelterUser.getDataAdopt() != null).map(SheltersUser::getId).toList();
+
         for (Long id : usersId) {
 
             Optional<Report> report = reportRepository.findBySheltersUserId(id).stream().sorted(Comparator.comparing(Report::getLocalDate)).reduce((first, second) -> second);
