@@ -2,7 +2,7 @@ package com.skypro.animalshelter.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.skypro.animalshelter.model.Animal;
-import com.skypro.animalshelter.model.ShelterUser;
+import com.skypro.animalshelter.model.SheltersUser;
 import com.skypro.animalshelter.service.impl.SheltersUserServiceImpl;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.time.LocalDate;
 import java.util.List;
 
+import static com.skypro.animalshelter.model.ShelterUserType.JUST_LOOKING;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -35,11 +36,11 @@ public class SheltersUserControllerTest {
     private ObjectMapper objectMapper;
 
     static Animal animal = new Animal(1L, "CAT", "Британец", true);
-    ShelterUser user = new ShelterUser(6L, "editName", "editSurname", "+79210000000", LocalDate.now(), 1L, animal);
-    public static final List<ShelterUser> USERS_LIST = List.of(
-            new ShelterUser(6L, "editName", "editSurname", "+79210000000", LocalDate.now(), 1L, animal),
-            new ShelterUser(6L, "editName", "editSurname", "+79210000000", LocalDate.now(), 1L, animal),
-            new ShelterUser(6L, "editName", "editSurname", "+79210000000", LocalDate.now(), 1L, animal)
+    SheltersUser user = new SheltersUser(6L, "editName", "editSurname", "+79210000000", LocalDate.now(), 1L, animal, JUST_LOOKING);
+    public static final List<SheltersUser> USERS_LIST = List.of(
+            new SheltersUser(6L, "editName", "editSurname", "+79210000000", LocalDate.now(), 1L, animal, JUST_LOOKING),
+            new SheltersUser(6L, "editName", "editSurname", "+79210000000", LocalDate.now(), 1L, animal, JUST_LOOKING),
+            new SheltersUser(6L, "editName", "editSurname", "+79210000000", LocalDate.now(), 1L, animal, JUST_LOOKING)
     );
 
     @Test

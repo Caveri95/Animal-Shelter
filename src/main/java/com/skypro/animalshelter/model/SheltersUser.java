@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @Setter
 @EqualsAndHashCode
 @Entity
-public class ShelterUser {
+public class SheltersUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,9 +26,9 @@ public class ShelterUser {
     @OneToOne
     @JoinColumn(name = "animal_id")
     private Animal animal;
+    private ShelterUserType userType;
 
-
-    public ShelterUser(long id, String name, String surname, String phoneNumber, LocalDate dataAdopt, long chatId, Animal animal) {
+    public SheltersUser(long id, String name, String surname, String phoneNumber, LocalDate dataAdopt, long chatId, Animal animal, ShelterUserType userType) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -36,6 +36,7 @@ public class ShelterUser {
         this.dataAdopt = dataAdopt;
         this.chatId = chatId;
         this.animal = animal;
+        this.userType = userType;
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.skypro.animalshelter.service;
 
 import com.skypro.animalshelter.model.Animal;
-import com.skypro.animalshelter.model.ShelterUser;
+import com.skypro.animalshelter.model.SheltersUser;
 import com.skypro.animalshelter.repository.SheltersUserRepository;
 import com.skypro.animalshelter.service.impl.SheltersUserServiceImpl;
 import org.assertj.core.api.Assertions;
@@ -16,12 +16,13 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import static com.skypro.animalshelter.model.ShelterUserType.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class ShelterShelterUserServiceServiceTest {
+public class SheltersUserServiceTest {
 
     @Mock
     private SheltersUserRepository userRepository;
@@ -29,13 +30,13 @@ public class ShelterShelterUserServiceServiceTest {
     private SheltersUserServiceImpl userService;
 
     static Animal animal = new Animal(1L, "CAT", "Британец", true);
-    ShelterUser testShelterUser = new ShelterUser(6, "editName", "editSurname", "+79210000000", LocalDate.now(), 1L, animal);
+    SheltersUser testSheltersUser = new SheltersUser(6, "editName", "editSurname", "+79210000000", LocalDate.now(), 1L, animal, JUST_LOOKING);
 
 
-    public static final List<ShelterUser> USERS_LIST = List.of(
-            new ShelterUser(6, "editName", "editSurname", "+79210000000", LocalDate.now(), 1L, animal),
-            new ShelterUser(6, "editName", "editSurname", "+79210000000", LocalDate.now(), 1L, animal),
-            new ShelterUser(6, "editName", "editSurname", "+79210000000", LocalDate.now(), 1L, animal)
+    public static final List<SheltersUser> USERS_LIST = List.of(
+            new SheltersUser(6, "editName", "editSurname", "+79210000000", LocalDate.now(), 1L, animal, JUST_LOOKING),
+            new SheltersUser(6, "editName", "editSurname", "+79210000000", LocalDate.now(), 1L, animal, JUST_LOOKING),
+            new SheltersUser(6, "editName", "editSurname", "+79210000000", LocalDate.now(), 1L, animal, JUST_LOOKING)
     );
 
     @Test
@@ -51,17 +52,17 @@ public class ShelterShelterUserServiceServiceTest {
     @DisplayName("Получить пользователя по его id")
     void shouldReturnShelterUserWhenFindByIdUserCalled() {
         when(userRepository.findById(anyLong()))
-                .thenReturn(Optional.ofNullable(testShelterUser));
+                .thenReturn(Optional.ofNullable(testSheltersUser));
 
-        assertEquals(testShelterUser, userService.findUserById(anyLong()));
+        assertEquals(testSheltersUser, userService.findUserById(anyLong()));
     }
 
     @Test
-    @DisplayName("Создзание пользователя")
+    @DisplayName("Создание пользователя")
     void shouldReturnUserWhenCreateUserCalled() {
-        when(userService.createUser(testShelterUser)).thenReturn(testShelterUser);
+        when(userService.createUser(testSheltersUser)).thenReturn(testSheltersUser);
 
-        assertEquals(userService.createUser(testShelterUser), testShelterUser);
+        assertEquals(userService.createUser(testSheltersUser), testSheltersUser);
 
     }
 
@@ -69,18 +70,18 @@ public class ShelterShelterUserServiceServiceTest {
     @DisplayName("Редактирование пользователя")
     void shouldReturnUserWhenEditUserCalled() {
 
-        when(userRepository.findById(anyLong())).thenReturn(Optional.of(testShelterUser));
+        when(userRepository.findById(anyLong())).thenReturn(Optional.of(testSheltersUser));
 
-        ShelterUser editShelterUser = userService.editUser(testShelterUser);
+        SheltersUser editSheltersUser = userService.editUser(testSheltersUser);
 
-        Assertions.assertThat(editShelterUser).isEqualTo(testShelterUser);
+        Assertions.assertThat(editSheltersUser).isEqualTo(testSheltersUser);
     }
 
     @Test
     @DisplayName("Удаление пользователя по его id")
     void shouldReturnTrueWhenDeleteUserByIdCalled() {
 
-        when(userRepository.findById(anyLong())).thenReturn(Optional.of(testShelterUser));
+        when(userRepository.findById(anyLong())).thenReturn(Optional.of(testSheltersUser));
 
         assertTrue(userService.deleteUserById(anyLong()));
     }

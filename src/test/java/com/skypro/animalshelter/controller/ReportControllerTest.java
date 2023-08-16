@@ -3,10 +3,9 @@ package com.skypro.animalshelter.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.skypro.animalshelter.model.Animal;
 import com.skypro.animalshelter.model.Report;
-import com.skypro.animalshelter.model.ShelterUser;
-import com.skypro.animalshelter.service.AnimalService;
+import com.skypro.animalshelter.model.ShelterUserType;
+import com.skypro.animalshelter.model.SheltersUser;
 import com.skypro.animalshelter.service.ReportService;
-import com.skypro.animalshelter.service.ShelterUserService;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,6 +21,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.skypro.animalshelter.model.ShelterUserType.JUST_LOOKING;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.when;
@@ -43,7 +43,7 @@ public class ReportControllerTest {
     private ObjectMapper objectMapper;
 
     Animal animal = new Animal(1L, "CAT", "Британец", true);
-    ShelterUser user = new ShelterUser(6L, "editName", "editSurname", "+79210000000", LocalDate.now(), 1L, animal);
+    SheltersUser user = new SheltersUser(6L, "editName", "editSurname", "+79210000000", LocalDate.now(), 1L, animal, JUST_LOOKING);
     Report report = new Report(1L, "photoPath1", LocalDate.now(), "textUnderFoto1", user);
     List<Report> listReports = new ArrayList<>(List.of(
             new Report(1, "photoPath1", LocalDate.now(), "textUnderFoto1", user),
@@ -64,13 +64,13 @@ public class ReportControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.photo").value("photoPath1"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.localDate").value(LocalDate.now().toString()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.reportTextUnderPhoto").value("textUnderFoto1"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.shelterUser.id").value(6L))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.shelterUser.name").value("editName"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.shelterUser.surname").value("editSurname"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.shelterUser.phoneNumber").value("+79210000000"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.shelterUser.dataAdopt").value(LocalDate.now().toString()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.shelterUser.chatId").value(1L))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.shelterUser.animal").value(animal))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.sheltersUser.id").value(6L))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.sheltersUser.name").value("editName"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.sheltersUser.surname").value("editSurname"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.sheltersUser.phoneNumber").value("+79210000000"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.sheltersUser.dataAdopt").value(LocalDate.now().toString()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.sheltersUser.chatId").value(1L))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.sheltersUser.animal").value(animal))
                 .andExpect(status().isOk());
 
         verify(reportService, only()).createReport(report);
@@ -90,13 +90,13 @@ public class ReportControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.photo").value("photoPath1"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.localDate").value(LocalDate.now().toString()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.reportTextUnderPhoto").value("textUnderFoto1"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.shelterUser.id").value(6L))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.shelterUser.name").value("editName"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.shelterUser.surname").value("editSurname"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.shelterUser.phoneNumber").value("+79210000000"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.shelterUser.dataAdopt").value(LocalDate.now().toString()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.shelterUser.chatId").value(1L))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.shelterUser.animal").value(animal))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.sheltersUser.id").value(6L))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.sheltersUser.name").value("editName"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.sheltersUser.surname").value("editSurname"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.sheltersUser.phoneNumber").value("+79210000000"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.sheltersUser.dataAdopt").value(LocalDate.now().toString()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.sheltersUser.chatId").value(1L))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.sheltersUser.animal").value(animal))
                 .andExpect(status().isOk());
 
         verify(reportService, only()).editReport(report);

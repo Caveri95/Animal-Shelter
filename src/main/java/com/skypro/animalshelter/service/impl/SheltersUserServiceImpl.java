@@ -1,12 +1,12 @@
 package com.skypro.animalshelter.service.impl;
 
-import com.skypro.animalshelter.model.ShelterUser;
+import com.skypro.animalshelter.exception.ShelterUserNotFoundException;
+import com.skypro.animalshelter.model.SheltersUser;
 import com.skypro.animalshelter.repository.SheltersUserRepository;
 import com.skypro.animalshelter.service.ShelterUserService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class SheltersUserServiceImpl implements ShelterUserService {
@@ -17,40 +17,39 @@ public class SheltersUserServiceImpl implements ShelterUserService {
         this.userRepository = userRepository;
     }
 
-
-    public List<ShelterUser> getAllUsers() {
+    @Override
+    public List<SheltersUser> getAllUsers() {
         return userRepository.findAll();
     }
-@Override
-    public ShelterUser createUser(ShelterUser shelterUser) {
-        userRepository.save(shelterUser);
-        return shelterUser;
-    }
-    @Override
-    public ShelterUser findUserById(Long id) {
-        Optional<ShelterUser> user = userRepository.findById(id);
-        return user.orElse(null);
-    }
-    @Override
 
-    public ShelterUser editUser(ShelterUser shelterUser) {
-        if (userRepository.findById(shelterUser.getId()).isPresent()) {
-            userRepository.save(shelterUser);
-            return shelterUser;
+    @Override
+    public SheltersUser createUser(SheltersUser sheltersUser) {
+        userRepository.save(sheltersUser);
+        return sheltersUser;
+    }
+
+    @Override
+    public SheltersUser findUserById(Long id) {
+        return userRepository.findById(id).orElseThrow(ShelterUserNotFoundException::new);
+    }
+
+    @Override
+    public SheltersUser editUser(SheltersUser sheltersUser) {
+        if (userRepository.findById(sheltersUser.getId()).isPresent()) {
+            userRepository.save(sheltersUser);
+            return sheltersUser;
         } else {
-            return null;
+            throw new ShelterUserNotFoundException();
         }
     }
-@Override
 
+    @Override
     public boolean deleteUserById(Long id) {
         if (userRepository.findById(id).isPresent()) {
             userRepository.deleteById(id);
             return true;
         } else {
-            return false;
+            throw new ShelterUserNotFoundException();
         }
     }
-
-
 }

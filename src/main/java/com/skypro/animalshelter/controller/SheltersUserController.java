@@ -1,6 +1,6 @@
 package com.skypro.animalshelter.controller;
 
-import com.skypro.animalshelter.model.ShelterUser;
+import com.skypro.animalshelter.model.SheltersUser;
 import com.skypro.animalshelter.service.impl.SheltersUserServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -28,46 +28,46 @@ public class SheltersUserController {
     @PostMapping
     @Operation(summary = "Добавить нового пользователя", description = "Введите данные")
     @ApiResponse(responseCode = "200", description = "Пользователь добавлен", content = {
-            @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = ShelterUser.class)))
+            @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = SheltersUser.class)))
     })
-    public ResponseEntity<ShelterUser> addUser(@RequestBody ShelterUser shelterUser) {
+    public ResponseEntity<SheltersUser> addUser(@RequestBody SheltersUser sheltersUser) {
 
-        return ResponseEntity.ok(userService.createUser(shelterUser));
+        return ResponseEntity.ok(userService.createUser(sheltersUser));
     }
 
     @GetMapping
     @Operation(summary = "Получить список всех юзеров")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Список пользователей получен", content = {
-                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = ShelterUser.class)))
+                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = SheltersUser.class)))
             }),
             @ApiResponse(responseCode = "404", description = "Ничего не найдено"),
             @ApiResponse(responseCode = "500", description = "Произошла ошибка, не зависящая от вызывающей стороны")
     })
-    public ResponseEntity<List<ShelterUser>> getAllUser() {
-        List<ShelterUser> allShelterUsers = userService.getAllUsers();
-        if (allShelterUsers.isEmpty()) {
+    public ResponseEntity<List<SheltersUser>> getAllUser() {
+        List<SheltersUser> allSheltersUsers = userService.getAllUsers();
+        if (allSheltersUsers.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(allShelterUsers);
+        return ResponseEntity.ok(allSheltersUsers);
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Получить пользователя по его id", description = "Введите id пользователя")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Пользователь получен", content = {
-                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = ShelterUser.class)))}),
+                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = SheltersUser.class)))}),
             @ApiResponse(responseCode = "400", description = "Параметры запроса отсутствуют или имеют некорректный формат"),
             @ApiResponse(responseCode = "404", description = "Пользователь не найден"),
             @ApiResponse(responseCode = "500", description = "Произошла ошибка, не зависящая от вызывающей стороны")
     })
-    public ResponseEntity<ShelterUser> getUserById(@PathVariable long id) {
+    public ResponseEntity<SheltersUser> getUserById(@PathVariable long id) {
 
-        ShelterUser sheltersShelterUser = userService.findUserById(id);
-        if (sheltersShelterUser == null) {
+        SheltersUser sheltersSheltersUser = userService.findUserById(id);
+        if (sheltersSheltersUser == null) {
             return ResponseEntity.notFound().build();
         } else {
-            return ResponseEntity.ok(sheltersShelterUser);
+            return ResponseEntity.ok(sheltersSheltersUser);
         }
     }
 
@@ -75,18 +75,18 @@ public class SheltersUserController {
     @Operation(summary = "Отредактировать данные пользователя", description = "Введите id пользователя и его данные")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Пользователь отредактирован", content = {
-                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = ShelterUser.class)))}),
+                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = SheltersUser.class)))}),
             @ApiResponse(responseCode = "400", description = "Параметры запроса отсутствуют или имеют некорректный формат"),
             @ApiResponse(responseCode = "404", description = "Пользователь для редактирования не найден"),
             @ApiResponse(responseCode = "500", description = "Произошла ошибка, не зависящая от вызывающей стороны")
     })
-    public ResponseEntity<ShelterUser> editUser(@RequestBody ShelterUser shelterUser) {
+    public ResponseEntity<SheltersUser> editUser(@RequestBody SheltersUser sheltersUser) {
 
-        ShelterUser sheltersShelterUser = userService.editUser(shelterUser);
-        if (sheltersShelterUser == null) {
+        SheltersUser sheltersSheltersUser = userService.editUser(sheltersUser);
+        if (sheltersSheltersUser == null) {
             return ResponseEntity.noContent().build();
         } else {
-            return ResponseEntity.ok(sheltersShelterUser);
+            return ResponseEntity.ok(sheltersSheltersUser);
         }
     }
 
@@ -94,7 +94,7 @@ public class SheltersUserController {
     @Operation(summary = "Удалить юзера из базы данных", description = "Необходимо указать id пользователя, которого нужно удалить")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Пользователь удален", content = {
-                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = ShelterUser.class)))}),
+                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = SheltersUser.class)))}),
             @ApiResponse(responseCode = "400", description = "Параметры запроса отсутствуют или имеют некорректный формат"),
             @ApiResponse(responseCode = "500", description = "Произошла ошибка, не зависящая от вызывающей стороны")
 

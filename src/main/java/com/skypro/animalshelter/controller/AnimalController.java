@@ -1,7 +1,7 @@
 package com.skypro.animalshelter.controller;
 
 import com.skypro.animalshelter.model.Animal;
-import com.skypro.animalshelter.model.ShelterUser;
+import com.skypro.animalshelter.model.SheltersUser;
 import com.skypro.animalshelter.service.AnimalService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -57,7 +57,7 @@ public class AnimalController {
     @Operation(summary = "Получить животного по его id", description = "Введите id животного")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Животное получен", content = {
-                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = ShelterUser.class)))}),
+                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = SheltersUser.class)))}),
             @ApiResponse(responseCode = "400", description = "Параметры запроса отсутствуют или имеют некорректный формат"),
             @ApiResponse(responseCode = "404", description = "Животное не найден"),
             @ApiResponse(responseCode = "500", description = "Произошла ошибка, не зависящая от вызывающей стороны")
