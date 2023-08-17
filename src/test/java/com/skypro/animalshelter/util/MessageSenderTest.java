@@ -1,34 +1,36 @@
 package com.skypro.animalshelter.util;
 
+import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import com.pengrad.telegrambot.request.SendMessage;
-import liquibase.pro.packaged.D;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import static com.skypro.animalshelter.util.CallbackDataRequest.CAT;
-import static com.skypro.animalshelter.util.CallbackDataRequest.DOG;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
 class MessageSenderTest {
-    @Mock
-    private MessageSender messageSender;
+    private final MessageSender messageSender;
 
     @Mock
     private KeyboardUtil keyboardUtil;
 
+    @Mock
+    private TelegramBot telegramBot;
+
 
     Long id = 1L;
     String text = "Тестовое сообщение пользователю";
+
+    MessageSenderTest(MessageSender messageSender) {
+        this.messageSender = messageSender;
+    }
 
 
     @Test
@@ -38,9 +40,9 @@ class MessageSenderTest {
 
         SendMessage sendMessage = new SendMessage(id, text);
 
-        when(messageSender.sendMessage(anyLong(), anyString())).thenReturn(sendMessage);
 
-        assertEquals(sendMessage, messageSender.sendMessage(id, text));
+
+        assertEquals(sendMessage.toString(), messageSender.sendMessage(id, text).toString());
     }
 
     @Test

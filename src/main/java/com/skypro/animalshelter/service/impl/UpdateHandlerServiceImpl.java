@@ -39,10 +39,6 @@ public class UpdateHandlerServiceImpl implements UpdateHandlerService {
         if ("/start".equals(userText)) {
 
             if (userRepository.findSheltersUserByChatId(chatId).isEmpty()) {
-                /*ShelterUsers user  = new ShelterUsers();
-                user.setChatId(chatId);
-                user.setName(update.message().chat().firstName());
-                userRepository.save(user);*/
                 menuService.getFirstStartMenuShelter(chatId);
             } else {
                 menuService.getStartMenuShelter(chatId);
