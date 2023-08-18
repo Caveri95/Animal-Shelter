@@ -1,5 +1,7 @@
 package com.skypro.animalshelter.service;
 
+import com.skypro.animalshelter.exception.AnimalNotFoundException;
+import com.skypro.animalshelter.exception.ReportNotFoundException;
 import com.skypro.animalshelter.model.Animal;
 import com.skypro.animalshelter.model.Report;
 import com.skypro.animalshelter.model.SheltersUser;
@@ -18,6 +20,7 @@ import java.util.Optional;
 
 import static com.skypro.animalshelter.model.ShelterUserType.JUST_LOOKING;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
@@ -84,4 +87,30 @@ public class ReportServiceTest {
 
         assertTrue(reportService.deleteReportById(anyLong()));
     }
+
+    @Test
+    @DisplayName("Ошибка при удалении отчета")
+    void shouldReturnExceptionWhenDeleteAnimalByIdCalled() {
+        when(reportRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThrows(ReportNotFoundException.class, () -> reportService.deleteReportById(anyLong()));
+    }
+
+    @Test
+    @DisplayName("Ошибка при редактировании отчета")
+    void shouldReturnExceptionWhenEditAnimalCalled() {
+        when(reportRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThrows(ReportNotFoundException.class, () -> reportService.editReport(report));
+    }
+
+    @Test
+    @DisplayName("Ошибка при поиске отчета по id")
+    void shouldReturnExceptionWhenFindByIdCalled() {
+        when(reportRepository.findById(anyLong())).thenThrow(ReportNotFoundException.class);
+
+        assertThrows(ReportNotFoundException.class, () -> reportService.findReportById(anyLong()));
+    }
+
+
 }

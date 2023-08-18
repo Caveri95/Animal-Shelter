@@ -88,7 +88,7 @@ public class AnimalServiceTest {
     @Test
     @DisplayName("Ошибка при удалении животного")
     void shouldReturnExceptionWhenDeleteAnimalByIdCalled() {
-        when(animalRepository.findById(anyLong())).thenThrow(AnimalNotFoundException.class);
+        when(animalRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThrows(AnimalNotFoundException.class, () -> animalService.deleteAnimalById(anyLong()));
     }
@@ -96,7 +96,7 @@ public class AnimalServiceTest {
     @Test
     @DisplayName("Ошибка при редактировании животного")
     void shouldReturnExceptionWhenEditAnimalCalled() {
-        when(animalRepository.findById(anyLong())).thenThrow(AnimalNotFoundException.class);
+        when(animalRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThrows(AnimalNotFoundException.class, () -> animalService.editAnimal(animal));
     }

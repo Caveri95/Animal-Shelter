@@ -15,6 +15,7 @@ import com.skypro.animalshelter.repository.ReportRepository;
 import com.skypro.animalshelter.repository.SheltersUserRepository;
 import com.skypro.animalshelter.service.ReportService;
 import com.skypro.animalshelter.util.MessageSender;
+import liquibase.pro.packaged.S;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -89,10 +90,10 @@ public class ReportServiceImpl implements ReportService {
     @Scheduled(cron = "0 00 21 * * *") //напоминания каждый день, если до 21 отчет так и не был прислан
     public void reportReminder() {
 
-        List<Long> usersId = userRepository.findAll().stream().filter(shelterUser -> shelterUser.getDataAdopt() != null).map(SheltersUser::getId).toList();
-        for (Long id : usersId) {
+        List<SheltersUser> users = userRepository.findSheltersUserByDataAdoptIsNotNull();
+        for (SheltersUser user : users) {
 
-            Optional<Report> report = reportRepository.findBySheltersUserId(id)
+            Optional<Report> report = reportRepository.findBySheltersUserId(user.getId())
                     .stream()
                     .sorted(Comparator.comparing(Report::getLocalDate))
                     .reduce((first, second) -> second);
@@ -107,10 +108,10 @@ public class ReportServiceImpl implements ReportService {
     @Scheduled(cron = "0 00 21 * * *") //напоминание в 21 если уже 2 дня не было отчетов
     public void reportReminderTwoDaysNoReport() {
 
-        List<Long> usersId = userRepository.findAll().stream().filter(shelterUser -> shelterUser.getDataAdopt() != null).map(SheltersUser::getId).toList();
-        for (Long id : usersId) {
+        List<SheltersUser> users = userRepository.findSheltersUserByDataAdoptIsNotNull();
+        for (SheltersUser user : users) {
 
-            Optional<Report> report = reportRepository.findBySheltersUserId(id).stream().sorted(Comparator.comparing(Report::getLocalDate)).reduce((first, second) -> second);
+            Optional<Report> report = reportRepository.findBySheltersUserId(user.getId()).stream().sorted(Comparator.comparing(Report::getLocalDate)).reduce((first, second) -> second);
             if (report.isPresent()) {
                 if (report.get().getLocalDate().isAfter(report.get().getLocalDate().plusDays(2))) {
                     messageSender.sendMessage(report.get().getSheltersUser().getChatId(), "Вы не присылали отчет уже 2 дня, с вами свяжется наш волонтер");
@@ -122,34 +123,34 @@ public class ReportServiceImpl implements ReportService {
     @Scheduled(cron = "0 00 12 * * *") //когда прошло 30 дней и принимается решение от волонтеров. Тут сделан выбор по рандому
     public void probationSolutionSuccess() {
 
-        List<Long> usersId = userRepository.findAll().stream().filter(shelterUser -> shelterUser.getDataAdopt() != null).map(SheltersUser::getId).toList();
-        for (Long id : usersId) {
+        List<SheltersUser> users = userRepository.findSheltersUserByDataAdoptIsNotNull();
+        for (SheltersUser user : users) {
 
-            Optional<Report> report = reportRepository.findBySheltersUserId(id).stream().sorted(Comparator.comparing(Report::getLocalDate)).reduce((first, second) -> second);
+            Optional<Report> report = reportRepository.findBySheltersUserId(user.getId()).stream().sorted(Comparator.comparing(Report::getLocalDate)).reduce((first, second) -> second);
             if (report.isPresent()) {
                 if (report.get().getLocalDate().isAfter(report.get().getLocalDate().plusMonths(1))) {
-                    SheltersUser user = userRepository.findById(id).orElseThrow(ShelterUserNotFoundException::new);
+                    SheltersUser sheltersUser = userRepository.findById(user.getId()).orElseThrow(ShelterUserNotFoundException::new);
 
                     int random = (int) (Math.random() * 4);
                     switch (random) {
                         case 1:
-                            user.setUserType(ShelterUserType.SUCCESSFUL_COMPLETION);
+                            sheltersUser.setUserType(ShelterUserType.SUCCESSFUL_COMPLETION);
                             messageSender.sendMessage(report.get().getSheltersUser().getChatId(),
                                     "Поздравляю! Вы прошли испытательный срок и можете оставить питомца себе");;
                             break;
                         case 2:
-                            user.setUserType(ShelterUserType.FAILED);
+                            sheltersUser.setUserType(ShelterUserType.FAILED);
                             messageSender.sendMessage(report.get().getSheltersUser().getChatId(),
                                     "Вы не прошли испытательный срок. Наши волонтеры с Вами свяжутся");;
                             break;
                         case 3:
-                            user.setUserType(ShelterUserType.PROBATION_EXTEND_14);
+                            sheltersUser.setUserType(ShelterUserType.PROBATION_EXTEND_14);
                             messageSender.sendMessage(report.get().getSheltersUser().getChatId(),
                                     "Волонтеры решили, что Ваш испытательный срок будет продлен на 14 дней. " +
                                             "Продолжайте ежедневно присылать отчеты о питомце");
                             break;
                         case 4:
-                            user.setUserType(ShelterUserType.PROBATION_EXTEND_30);
+                            sheltersUser.setUserType(ShelterUserType.PROBATION_EXTEND_30);
                             messageSender.sendMessage(report.get().getSheltersUser().getChatId(),
                                     "Волонтеры решили, что Ваш испытательный срок будет продлен на 30 дней. " +
                                             "Продолжайте ежедневно присылать отчеты о питомце");;
@@ -164,12 +165,7 @@ public class ReportServiceImpl implements ReportService {
     public Boolean checkIsFullReportPostToday() {
 
         Optional<Report> reports = reportRepository.findByLocalDateEquals(LocalDate.now());
-        if (reports.isPresent()) {
-            if (!reports.get().getPhoto().isEmpty() && !reports.get().getReportTextUnderPhoto().isEmpty()) {
-                return true;
-            }
-        }
-        return false;
+        return reports.filter(report -> !report.getPhoto().isEmpty() && !report.getReportTextUnderPhoto().isEmpty()).isPresent();
     }
 
     @Override
