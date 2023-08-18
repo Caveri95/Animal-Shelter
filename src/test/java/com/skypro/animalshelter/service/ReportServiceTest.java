@@ -20,6 +20,7 @@ import java.util.Optional;
 
 import static com.skypro.animalshelter.model.ShelterUserType.JUST_LOOKING;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
@@ -90,7 +91,7 @@ public class ReportServiceTest {
     @Test
     @DisplayName("Ошибка при удалении отчета")
     void shouldReturnExceptionWhenDeleteAnimalByIdCalled() {
-        when(reportRepository.findById(anyLong())).thenThrow(ReportNotFoundException.class);
+        when(reportRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThrows(ReportNotFoundException.class, () -> reportService.deleteReportById(anyLong()));
     }
@@ -98,7 +99,7 @@ public class ReportServiceTest {
     @Test
     @DisplayName("Ошибка при редактировании отчета")
     void shouldReturnExceptionWhenEditAnimalCalled() {
-        when(reportRepository.findById(anyLong())).thenThrow(ReportNotFoundException.class);
+        when(reportRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThrows(ReportNotFoundException.class, () -> reportService.editReport(report));
     }
@@ -110,4 +111,6 @@ public class ReportServiceTest {
 
         assertThrows(ReportNotFoundException.class, () -> reportService.findReportById(anyLong()));
     }
+
+
 }

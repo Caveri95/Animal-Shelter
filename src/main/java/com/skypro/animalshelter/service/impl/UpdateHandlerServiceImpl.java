@@ -9,6 +9,7 @@ import com.skypro.animalshelter.service.UpdateHandlerService;
 import com.skypro.animalshelter.util.MessageSender;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -53,21 +54,14 @@ public class UpdateHandlerServiceImpl implements UpdateHandlerService {
                 String surname = matcher.group(2);
                 String phoneNumber = matcher.group(3);
 
-                if (userRepository.findSheltersUserByChatId(chatId).isPresent()) {
-                    SheltersUser user = userRepository.findSheltersUserByChatId(chatId).get();
-                    user.setChatId(chatId);
-                    user.setName(name);
-                    user.setSurname(surname);
-                    user.setPhoneNumber(phoneNumber);
-                    userRepository.save(user);
-                } else {
-                    SheltersUser user = new SheltersUser();
-                    user.setChatId(chatId);
-                    user.setName(name);
-                    user.setSurname(surname);
-                    user.setPhoneNumber(phoneNumber);
-                    userRepository.save(user);
-                }
+                SheltersUser user = userRepository.findSheltersUserByChatId(chatId).isPresent() ?
+                        userRepository.findSheltersUserByChatId(chatId).get() : new SheltersUser();
+
+                user.setChatId(chatId);
+                user.setName(name);
+                user.setSurname(surname);
+                user.setPhoneNumber(phoneNumber);
+                userRepository.save(user);
 
                 messageSender.sendMessage(chatId, "Ваши данные успешно обновлены");
             } else {

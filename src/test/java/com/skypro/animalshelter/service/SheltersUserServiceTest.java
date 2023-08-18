@@ -91,7 +91,7 @@ public class SheltersUserServiceTest {
     @Test
     @DisplayName("Ошибка при удалении пользователя")
     void shouldReturnExceptionWhenDeleteAnimalByIdCalled() {
-        when(userRepository.findById(anyLong())).thenThrow(ShelterUserNotFoundException.class);
+        when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThrows(ShelterUserNotFoundException.class, () -> userService.deleteUserById(anyLong()));
     }
@@ -99,7 +99,7 @@ public class SheltersUserServiceTest {
     @Test
     @DisplayName("Ошибка при редактировании пользователя")
     void shouldReturnExceptionWhenEditAnimalCalled() {
-        when(userRepository.findById(anyLong())).thenThrow(ShelterUserNotFoundException.class);
+        when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThrows(ShelterUserNotFoundException.class, () -> userService.editUser(testSheltersUser));
     }
