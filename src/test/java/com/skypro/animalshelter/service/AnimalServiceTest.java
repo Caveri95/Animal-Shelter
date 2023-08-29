@@ -1,5 +1,6 @@
 package com.skypro.animalshelter.service;
 
+import com.skypro.animalshelter.exception.AnimalNotFoundException;
 import com.skypro.animalshelter.model.Animal;
 import com.skypro.animalshelter.repository.AnimalRepository;
 import com.skypro.animalshelter.service.impl.AnimalServiceImpl;
@@ -51,6 +52,8 @@ public class AnimalServiceTest {
         assertEquals(animal, animalService.findAnimalById(anyLong()));
     }
 
+
+
     @Test
     @DisplayName("Создание животного")
     void shouldReturnAnimalWhenCreateUserCalled() {
@@ -62,7 +65,7 @@ public class AnimalServiceTest {
 
     @Test
     @DisplayName("Редактирование животного")
-    void shouldReturnAnimalWhenEditUserCalled() {
+    void shouldReturnAnimalWhenEditAnimalCalled() {
 
         when(animalRepository.findById(anyLong())).thenReturn(Optional.of(animal));
 
@@ -71,6 +74,8 @@ public class AnimalServiceTest {
         Assertions.assertThat(animal1).isEqualTo(animal);
     }
 
+
+
     @Test
     @DisplayName("Удаление животного по его id")
     void shouldReturnTrueWhenDeleteAnimalByIdCalled() {
@@ -78,5 +83,29 @@ public class AnimalServiceTest {
         when(animalRepository.findById(anyLong())).thenReturn(Optional.of(animal));
 
         assertTrue(animalService.deleteAnimalById(anyLong()));
+    }
+
+    @Test
+    @DisplayName("Ошибка при удалении животного")
+    void shouldReturnExceptionWhenDeleteAnimalByIdCalled() {
+        when(animalRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThrows(AnimalNotFoundException.class, () -> animalService.deleteAnimalById(anyLong()));
+    }
+
+    @Test
+    @DisplayName("Ошибка при редактировании животного")
+    void shouldReturnExceptionWhenEditAnimalCalled() {
+        when(animalRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThrows(AnimalNotFoundException.class, () -> animalService.editAnimal(animal));
+    }
+
+    @Test
+    @DisplayName("Ошибка при поиске животного по id")
+    void shouldReturnExceptionWhenFindByIdCalled() {
+        when(animalRepository.findById(anyLong())).thenThrow(AnimalNotFoundException.class);
+
+        assertThrows(AnimalNotFoundException.class, () -> animalService.findAnimalById(anyLong()));
     }
 }

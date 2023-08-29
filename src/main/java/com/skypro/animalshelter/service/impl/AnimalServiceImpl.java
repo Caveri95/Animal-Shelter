@@ -1,12 +1,12 @@
 package com.skypro.animalshelter.service.impl;
 
+import com.skypro.animalshelter.exception.AnimalNotFoundException;
 import com.skypro.animalshelter.model.Animal;
 import com.skypro.animalshelter.repository.AnimalRepository;
 import com.skypro.animalshelter.service.AnimalService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AnimalServiceImpl implements AnimalService {
@@ -35,13 +35,13 @@ public class AnimalServiceImpl implements AnimalService {
             animalRepository.save(animal);
             return animal;
         } else {
-            return null;
+            throw new AnimalNotFoundException();
         }
     }
 @Override
     public Animal findAnimalById(Long id) {
-        Optional<Animal> animal = animalRepository.findById(id);
-        return animal.orElse(null);
+
+    return animalRepository.findById(id).orElseThrow(AnimalNotFoundException::new);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class AnimalServiceImpl implements AnimalService {
             animalRepository.deleteById(id);
             return true;
         } else {
-            return false;
+            throw new AnimalNotFoundException();
         }
     }
 }

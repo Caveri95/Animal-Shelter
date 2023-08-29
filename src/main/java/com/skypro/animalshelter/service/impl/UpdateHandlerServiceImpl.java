@@ -2,13 +2,14 @@ package com.skypro.animalshelter.service.impl;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
-import com.skypro.animalshelter.model.ShelterUser;
+import com.skypro.animalshelter.model.SheltersUser;
 import com.skypro.animalshelter.repository.SheltersUserRepository;
 import com.skypro.animalshelter.service.ReportService;
 import com.skypro.animalshelter.service.UpdateHandlerService;
 import com.skypro.animalshelter.util.MessageSender;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -39,10 +40,6 @@ public class UpdateHandlerServiceImpl implements UpdateHandlerService {
         if ("/start".equals(userText)) {
 
             if (userRepository.findSheltersUserByChatId(chatId).isEmpty()) {
-                /*ShelterUsers user  = new ShelterUsers();
-                user.setChatId(chatId);
-                user.setName(update.message().chat().firstName());
-                userRepository.save(user);*/
                 menuService.getFirstStartMenuShelter(chatId);
             } else {
                 menuService.getStartMenuShelter(chatId);
@@ -57,21 +54,14 @@ public class UpdateHandlerServiceImpl implements UpdateHandlerService {
                 String surname = matcher.group(2);
                 String phoneNumber = matcher.group(3);
 
-                if (userRepository.findSheltersUserByChatId(chatId).isPresent()) {
-                    ShelterUser user = userRepository.findSheltersUserByChatId(chatId).get();
-                    user.setChatId(chatId);
-                    user.setName(name);
-                    user.setSurname(surname);
-                    user.setPhoneNumber(phoneNumber);
-                    userRepository.save(user);
-                } else {
-                    ShelterUser user = new ShelterUser();
-                    user.setChatId(chatId);
-                    user.setName(name);
-                    user.setSurname(surname);
-                    user.setPhoneNumber(phoneNumber);
-                    userRepository.save(user);
-                }
+                SheltersUser user = userRepository.findSheltersUserByChatId(chatId).isPresent() ?
+                        userRepository.findSheltersUserByChatId(chatId).get() : new SheltersUser();
+
+                user.setChatId(chatId);
+                user.setName(name);
+                user.setSurname(surname);
+                user.setPhoneNumber(phoneNumber);
+                userRepository.save(user);
 
                 messageSender.sendMessage(chatId, "Ваши данные успешно обновлены.");
             } else {
