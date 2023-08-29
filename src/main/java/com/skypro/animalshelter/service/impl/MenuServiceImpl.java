@@ -28,9 +28,9 @@ public class MenuServiceImpl implements MenuService {
 
         InlineKeyboardMarkup keyboard = keyboardUtil.setKeyboard(CAT, DOG);
 
-        SendMessage sendMessage = new SendMessage(chatId, "Привет, (тут мини приветствие от приюта для первый раз зашедшего)" +
-                " вы находитесь в меню выбора приюта для кошек или " +
-                "собак, пожалуйста, выбери приют, о котором хотите узнать").replyMarkup(keyboard);
+        SendMessage sendMessage = new SendMessage(chatId, "Добрый день, мы всегда рады новым посетителям приюта!" +
+                " Вы находитесь в меню выбора приюта для кошек или " +
+                "собак, пожалуйста, выберите приют, о котором хотите узнать").replyMarkup(keyboard);
         telegramBot.execute(sendMessage);
         return sendMessage;
     }
@@ -53,25 +53,29 @@ public class MenuServiceImpl implements MenuService {
                 REPORT_ANIMAL,
                 TAKE_CAT,
                 VOLUNTEER);
-        return messageSender.sendMessageWithKeyboard(chatId, "Вы выбрали приют для кошек, чем могу помочь?", keyboard);
+        SendMessage sendMessage = new SendMessage(chatId, "Вы выбрали приют для кошек, чем могу помочь?").replyMarkup(keyboard);
+        telegramBot.execute(sendMessage);
+        return sendMessage;
     }
 
     @Override
     public SendMessage getDogMenu(Long chatId) {
 
-        InlineKeyboardMarkup keyboard1 = keyboardUtil.setKeyboard(
+        InlineKeyboardMarkup keyboard = keyboardUtil.setKeyboard(
                 GENERAL_SHELTER_INFO,
                 HOW_TO_TAKE_ANIMAL,
                 REPORT_ANIMAL,
                 TAKE_DOG,
                 VOLUNTEER);
-        return messageSender.sendMessageWithKeyboard(chatId, "Вы выбрали приют для собак, чем могу помочь?", keyboard1);
+        SendMessage sendMessage = new SendMessage(chatId, "Вы выбрали приют для собак, чем могу помочь?").replyMarkup(keyboard);
+        telegramBot.execute(sendMessage);
+        return sendMessage;
     }
 
     @Override
     public SendMessage getInfoAboutShelter(Long chatId) {
 
-        InlineKeyboardMarkup inlineKeyboardMarkup = keyboardUtil.setKeyboard(
+        InlineKeyboardMarkup keyboard = keyboardUtil.setKeyboard(
                 ABOUT_SHELTER,
                 CONTACT_SHELTER,
                 SAFETY_CONTACT_FOR_CAR_PASS,
@@ -80,14 +84,16 @@ public class MenuServiceImpl implements MenuService {
                 VOLUNTEER,
                 ROLLBACK);
 
-        return messageSender.sendMessageWithKeyboard(chatId, "Выберите интересующую вас информацию", inlineKeyboardMarkup);
+        SendMessage sendMessage = new SendMessage(chatId, "Выберите интересующую вас информацию").replyMarkup(keyboard);
+        telegramBot.execute(sendMessage);
+        return sendMessage;
     }
 
     @Override
     public SendMessage getInfoAboutTakeAnimal(Long chatId, boolean isCat) {
         if (!isCat) {
 
-            InlineKeyboardMarkup inlineKeyboardMarkup = keyboardUtil.setKeyboard(
+            InlineKeyboardMarkup keyboard = keyboardUtil.setKeyboard(
                     SHELTER_RULES_BEFORE_MEETING_ANIMAL,
                     DOCUMENTS_TO_TAKE_ANIMAL,
                     TRANSPORTATION_ADVICE,
@@ -99,11 +105,13 @@ public class MenuServiceImpl implements MenuService {
                     REFUSE_REASONS,
                     GIVE_MY_CONTACT);
 
-            return messageSender.sendMessageWithKeyboard(chatId, "Постараюсь дать Вам максимально полную информацию " +
+            SendMessage sendMessage = new SendMessage(chatId, "Постараюсь дать Вам максимально полную информацию " +
                     "о том как разобраться с бюрократическими (оформление договора) и бытовыми (как подготовиться к жизни с животным) " +
-                    "вопросами)", inlineKeyboardMarkup);
+                    "вопросами)").replyMarkup(keyboard);
+            telegramBot.execute(sendMessage);
+            return sendMessage;
         } else {
-            InlineKeyboardMarkup inlineKeyboardMarkup = keyboardUtil.setKeyboard(
+            InlineKeyboardMarkup keyboard = keyboardUtil.setKeyboard(
                     SHELTER_RULES_BEFORE_MEETING_ANIMAL,
                     DOCUMENTS_TO_TAKE_ANIMAL,
                     TRANSPORTATION_ADVICE,
@@ -112,10 +120,11 @@ public class MenuServiceImpl implements MenuService {
                     HOUSE_RULES_FOR_ANIMAL_WITH_DISABILITY,
                     GIVE_MY_CONTACT);
 
-            return messageSender.sendMessageWithKeyboard(chatId, "Постараюсь дать Вам максимально полную информацию " +
+            SendMessage sendMessage = new SendMessage(chatId, "Постараюсь дать Вам максимально полную информацию " +
                     "о том как разобраться с бюрократическими (оформление договора) и бытовыми (как подготовиться к жизни с животным) " +
-                    "вопросами)", inlineKeyboardMarkup);
+                    "вопросами)").replyMarkup(keyboard);
+            telegramBot.execute(sendMessage);
+            return sendMessage;
         }
     }
-
 }

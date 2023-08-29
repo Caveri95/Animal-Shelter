@@ -1,5 +1,6 @@
 package com.skypro.animalshelter.service.impl;
 
+import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.skypro.animalshelter.model.Animal;
 import com.skypro.animalshelter.model.SheltersUser;
@@ -11,7 +12,6 @@ import com.skypro.animalshelter.util.MessageSender;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
 
 import static com.skypro.animalshelter.util.CallbackDataRequest.CAT;
@@ -23,11 +23,13 @@ public class TakeAnimalImpl implements TakeAnimal {
     private final SheltersUserRepository userRepository;
     private final MessageSender messageSender;
     private final AnimalRepository animalRepository;
+    private final TelegramBot telegramBot;
 
-    public TakeAnimalImpl(SheltersUserRepository userRepository, MessageSender messageSender, AnimalRepository animalRepository) {
+    public TakeAnimalImpl(SheltersUserRepository userRepository, MessageSender messageSender, AnimalRepository animalRepository, TelegramBot telegramBot) {
         this.userRepository = userRepository;
         this.messageSender = messageSender;
         this.animalRepository = animalRepository;
+        this.telegramBot = telegramBot;
     }
 
     @Override
@@ -36,12 +38,16 @@ public class TakeAnimalImpl implements TakeAnimal {
         Optional<SheltersUser> user = userRepository.findSheltersUserByChatId(chatId);
 
         if (user.isEmpty()) {
-            return messageSender.sendMessage(chatId, "Пожалуйста, прежде чем взять себе питомца оставьте " +
+            SendMessage sendMessage = new SendMessage(chatId,"Пожалуйста, прежде чем взять себе питомца оставьте " +
                     "свои контактные данные в формате \"Имя Фамилия Номер телефона с кодом +7\"");
+            telegramBot.execute(sendMessage);
+            return sendMessage;
         }
 
         if (user.get().getAnimal() != null) {
-            return messageSender.sendMessage(chatId, "Больше одного животного в нашем приюте брать нельзя");
+            SendMessage sendMessage = new SendMessage(chatId,"Больше одного животного в нашем приюте брать нельзя");
+            telegramBot.execute(sendMessage);
+            return sendMessage;
         }
 
         Optional<Animal> animal = isCat ? animalRepository.findFirstAnimalByTypeAnimalAndInShelter(CAT.getCallbackData(), true) : animalRepository.findFirstAnimalByTypeAnimalAndInShelter(DOG.getCallbackData(), true);

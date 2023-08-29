@@ -2,7 +2,6 @@ package com.skypro.animalshelter.service;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.request.SendMessage;
-import com.skypro.animalshelter.exception.AnimalNotFoundException;
 import com.skypro.animalshelter.exception.ReportNotFoundException;
 import com.skypro.animalshelter.model.Animal;
 import com.skypro.animalshelter.model.Report;
@@ -26,7 +25,6 @@ import java.util.Optional;
 
 import static com.skypro.animalshelter.model.ShelterUserType.JUST_LOOKING;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
@@ -53,7 +51,6 @@ public class ReportServiceTest {
     static SheltersUser user = new SheltersUser(6, "editName", "editSurname", "+79210000000", LocalDate.now(), 1L, animal, JUST_LOOKING);
 
     Report report = new Report(1L, "photoPath", LocalDate.now(), "textPhoto", user);
-
 
     public static final List<Report> REPORT_LIST = List.of(
             new Report(1L, "photoPath", LocalDate.now(), "textPhoto", user),
@@ -128,12 +125,10 @@ public class ReportServiceTest {
 
         assertThrows(ReportNotFoundException.class, () -> reportService.findReportById(anyLong()));
     }
-
-
     @Test
     @DisplayName("Вывод напоминания о необходимости отправить отчет")
-    void reportReminder() {
-
+    void shouldReturnReportReminder() {
+        when(userRepository.findSheltersUserByDataAdoptIsNotNull()).thenReturn(List.of(user));
         reportService.reportReminder();
 
         messageSender.sendMessage(id, text);
@@ -147,7 +142,9 @@ public class ReportServiceTest {
 
     @Test
     @DisplayName("Вывод напоминания после 2 дней о необходимости отправить отчет")
-    void reportReminderTwoDaysNoReport() {
+    void shouldReturnReportReminderTwoDaysNoReport() {
+        when(userRepository.findSheltersUserByDataAdoptIsNotNull()).thenReturn(List.of(user));
+
         reportService.reportReminderTwoDaysNoReport();
 
         messageSender.sendMessage(id, text);
@@ -158,6 +155,4 @@ public class ReportServiceTest {
         assertEquals(sendMessage.getParameters().get("text"), text);
         assertEquals(sendMessage.getParameters().get("chat_id"), id);
     }
-
-
 }

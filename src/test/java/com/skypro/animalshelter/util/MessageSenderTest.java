@@ -28,8 +28,6 @@ class MessageSenderTest {
 
     @Captor
     private ArgumentCaptor<SendMessage> captor;
-    @Mock
-    private KeyboardUtil keyboardUtil;
 
     Long id = 1L;
     String text = "Тестовое сообщение пользователю";
@@ -44,22 +42,5 @@ class MessageSenderTest {
 
         assertEquals(sendMessage.getParameters().get("text"), text);
         assertEquals(sendMessage.getParameters().get("chat_id"), id);
-    }
-
-    @Test
-    @DisplayName("Вывод сообщения с клавиатурой")
-    void sendMessageWithKeyboard() {
-
-        when(keyboardUtil.setKeyboard(CAT)).thenReturn(new InlineKeyboardMarkup().addRow(new InlineKeyboardButton(CAT.getText())));
-        InlineKeyboardMarkup keyboard = keyboardUtil.setKeyboard(CAT);
-
-        messageSender.sendMessageWithKeyboard(id, text, keyboard);
-        verify(telegramBot, times(1)).execute(captor.capture());
-
-        var sendMessage = captor.getValue();
-
-        assertEquals(sendMessage.getParameters().get("text"), text);
-        assertEquals(sendMessage.getParameters().get("chat_id"), id);
-        assertEquals(sendMessage.getParameters().get("reply_markup"), keyboard);
     }
 }
