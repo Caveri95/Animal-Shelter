@@ -28,9 +28,9 @@ public class MenuServiceImpl implements MenuService {
 
         InlineKeyboardMarkup keyboard = keyboardUtil.setKeyboard(CAT, DOG);
 
-        SendMessage sendMessage = new SendMessage(chatId, "Добрый день, мы всегда рады новым посетителям приюта!" +
-                " Вы находитесь в меню выбора приюта для кошек или " +
-                "собак, пожалуйста, выберите приют, о котором хотите узнать").replyMarkup(keyboard);
+        SendMessage sendMessage = new SendMessage(chatId, "Привет! Добро пожаловать в наш приют! Если вы ищете верного и преданного друга, то пришлите по адресу! " +
+                " Вы хотите подружиться с кошкой или с " +
+                "собакой? Пожалуйста, выберите подходящий приют, чтобы узнать больше.").replyMarkup(keyboard);
         telegramBot.execute(sendMessage);
         return sendMessage;
     }
@@ -127,4 +127,5 @@ public class MenuServiceImpl implements MenuService {
             return sendMessage;
         }
     }
+
 }
