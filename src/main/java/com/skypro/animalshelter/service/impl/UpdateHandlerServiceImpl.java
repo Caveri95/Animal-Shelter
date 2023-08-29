@@ -73,7 +73,7 @@ public class UpdateHandlerServiceImpl implements UpdateHandlerService {
                     userRepository.save(user);
                 }
 
-                messageSender.sendMessage(chatId, "Ваши данные успешно обновлены");
+                messageSender.sendMessage(chatId, "Ваши данные успешно обновлены.");
             } else {
                 messageSender.sendMessage(chatId, "Неккоректный формат сообщения!");
             }

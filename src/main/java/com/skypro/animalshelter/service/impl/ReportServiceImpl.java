@@ -48,8 +48,8 @@ public class ReportServiceImpl implements ReportService {
             Optional<Report> reports = reportRepository.findByLocalDateEquals(LocalDate.now());
             if (reports.isPresent()) {
                 if (!Objects.isNull(reports.get().getPhoto()) && !Objects.isNull(reports.get().getReportTextUnderPhoto())) {
-                    return messageSender.sendMessage(chatId, "Вы уже отправляли сегодня отчет по питомцу, наши волонтеры" +
-                            "посмотрят Ваш отчет");
+                    return messageSender.sendMessage(chatId, "Вы уже отправили отчет о своем питомце сегодня. Наши волонтеры" +
+                            "посмотрят Ваш отчет в ближайшее время.");
                 }
             }
         }
@@ -78,11 +78,11 @@ public class ReportServiceImpl implements ReportService {
         if (Objects.isNull(newReport.getPhoto()) || Objects.isNull(newReport.getReportTextUnderPhoto())) {
             return messageSender.sendMessage(chatId, "Нужно ФОТО и ОПИСАНИЕ под ним Дорогой усыновитель, мы заметили, что ты заполняешь " +
                     "отчет не так подробно, как необходимо. Пожалуйста, подойди ответственнее к этому занятию. " +
-                    "В противном случае волонтеры приюта будут обязаны самолично проверять условия содержания животного");
+                    "В противном случае волонтеры приюта будут вынуждены лично проверять условия содержания животного.");
         }
         reportRepository.save(newReport);
 
-        return messageSender.sendMessage(chatId, "Отчет добавлен, не забывайте отправлять отчеты о вашем питомце ежедневно");
+        return messageSender.sendMessage(chatId, "Отчет получен. Не забывайте отправлять отчеты о своем питомце ежедневно.");
 
 
     }

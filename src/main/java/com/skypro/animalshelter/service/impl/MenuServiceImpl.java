@@ -28,9 +28,9 @@ public class MenuServiceImpl implements MenuService {
 
         InlineKeyboardMarkup keyboard = keyboardUtil.setKeyboard(CAT, DOG);
 
-        SendMessage sendMessage = new SendMessage(chatId, "Привет, (тут мини приветствие от приюта для первый раз зашедшего)" +
-                " вы находитесь в меню выбора приюта для кошек или " +
-                "собак, пожалуйста, выбери приют, о котором хотите узнать").replyMarkup(keyboard);
+        SendMessage sendMessage = new SendMessage(chatId, "Привет! Добро пожаловать в наш приют! Если вы ищете верного и преданного друга, то пришли по адресу! " +
+                " Вы хотите подружиться с кошкой или с " +
+                "собакой? Пожалуйста, выберите подходящий приют, чтобы узнать больше.").replyMarkup(keyboard);
         telegramBot.execute(sendMessage);
         return sendMessage;
     }
@@ -40,7 +40,7 @@ public class MenuServiceImpl implements MenuService {
 
         InlineKeyboardMarkup keyboard = keyboardUtil.setKeyboard(CAT, DOG);
 
-        SendMessage sendMessage = new SendMessage(chatId, "Рады видеть Вас снова! Выберите приют").replyMarkup(keyboard);
+        SendMessage sendMessage = new SendMessage(chatId, "Рады видеть Вас снова! Выберите приют для кошек или для собак.").replyMarkup(keyboard);
         telegramBot.execute(sendMessage);
         return sendMessage;
     }
@@ -53,7 +53,7 @@ public class MenuServiceImpl implements MenuService {
                 REPORT_ANIMAL,
                 TAKE_CAT,
                 VOLUNTEER);
-        return messageSender.sendMessageWithKeyboard(chatId, "Вы выбрали приют для кошек, чем могу помочь?", keyboard);
+        return messageSender.sendMessageWithKeyboard(chatId, "Вы выбрали приют для кошек. Чем я могу Вам помочь?", keyboard);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class MenuServiceImpl implements MenuService {
                 REPORT_ANIMAL,
                 TAKE_DOG,
                 VOLUNTEER);
-        return messageSender.sendMessageWithKeyboard(chatId, "Вы выбрали приют для собак, чем могу помочь?", keyboard1);
+        return messageSender.sendMessageWithKeyboard(chatId, "Вы выбрали приют для собак. Чем я могу Вам помочь?", keyboard1);
     }
 
     @Override
@@ -99,9 +99,9 @@ public class MenuServiceImpl implements MenuService {
                     REFUSE_REASONS,
                     GIVE_MY_CONTACT);
 
-            return messageSender.sendMessageWithKeyboard(chatId, "Постараюсь дать Вам максимально полную информацию " +
-                    "о том как разобраться с бюрократическими (оформление договора) и бытовыми (как подготовиться к жизни с животным) " +
-                    "вопросами)", inlineKeyboardMarkup);
+            return messageSender.sendMessageWithKeyboard(chatId, "Дам подробную консультацию по " +
+                    "бюрократическим (например, оформление договора) и бытовым (например, подготовка к жизни с питомцем) " +
+                    "вопросам", inlineKeyboardMarkup);
         } else {
             InlineKeyboardMarkup inlineKeyboardMarkup = keyboardUtil.setKeyboard(
                     SHELTER_RULES_BEFORE_MEETING_ANIMAL,
@@ -112,9 +112,9 @@ public class MenuServiceImpl implements MenuService {
                     HOUSE_RULES_FOR_ANIMAL_WITH_DISABILITY,
                     GIVE_MY_CONTACT);
 
-            return messageSender.sendMessageWithKeyboard(chatId, "Постараюсь дать Вам максимально полную информацию " +
-                    "о том как разобраться с бюрократическими (оформление договора) и бытовыми (как подготовиться к жизни с животным) " +
-                    "вопросами)", inlineKeyboardMarkup);
+            return messageSender.sendMessageWithKeyboard(chatId, "Дам подробную консультацию по " +
+                    "бюрократическим (например, оформление договора) и бытовым (например, подготовка к жизни с питомцем) " +
+                    "вопросам", inlineKeyboardMarkup);
         }
     }
 
