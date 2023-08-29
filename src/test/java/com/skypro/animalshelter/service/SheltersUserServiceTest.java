@@ -1,5 +1,7 @@
 package com.skypro.animalshelter.service;
 
+import com.skypro.animalshelter.exception.ReportNotFoundException;
+import com.skypro.animalshelter.exception.ShelterUserNotFoundException;
 import com.skypro.animalshelter.model.Animal;
 import com.skypro.animalshelter.model.SheltersUser;
 import com.skypro.animalshelter.repository.SheltersUserRepository;
@@ -84,5 +86,29 @@ public class SheltersUserServiceTest {
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(testSheltersUser));
 
         assertTrue(userService.deleteUserById(anyLong()));
+    }
+
+    @Test
+    @DisplayName("Ошибка при удалении пользователя")
+    void shouldReturnExceptionWhenDeleteAnimalByIdCalled() {
+        when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThrows(ShelterUserNotFoundException.class, () -> userService.deleteUserById(anyLong()));
+    }
+
+    @Test
+    @DisplayName("Ошибка при редактировании пользователя")
+    void shouldReturnExceptionWhenEditAnimalCalled() {
+        when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThrows(ShelterUserNotFoundException.class, () -> userService.editUser(testSheltersUser));
+    }
+
+    @Test
+    @DisplayName("Ошибка при поиске пользователя по id")
+    void shouldReturnExceptionWhenFindByIdCalled() {
+        when(userRepository.findById(anyLong())).thenThrow(ShelterUserNotFoundException.class);
+
+        assertThrows(ShelterUserNotFoundException.class, () -> userService.findUserById(anyLong()));
     }
 }

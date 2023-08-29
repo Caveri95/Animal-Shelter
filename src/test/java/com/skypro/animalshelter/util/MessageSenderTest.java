@@ -1,59 +1,46 @@
 package com.skypro.animalshelter.util;
 
+import com.pengrad.telegrambot.TelegramBot;
+import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import com.pengrad.telegrambot.request.SendMessage;
-import liquibase.pro.packaged.D;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static com.skypro.animalshelter.util.CallbackDataRequest.CAT;
-import static com.skypro.animalshelter.util.CallbackDataRequest.DOG;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
-
+import static com.skypro.animalshelter.util.CallbackDataRequest.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class MessageSenderTest {
+
     @Mock
+    private TelegramBot telegramBot;
+
+    @InjectMocks
     private MessageSender messageSender;
 
-    @Mock
-    private KeyboardUtil keyboardUtil;
-
+    @Captor
+    private ArgumentCaptor<SendMessage> captor;
 
     Long id = 1L;
     String text = "Тестовое сообщение пользователю";
 
-
     @Test
     @DisplayName("Вывод сообщения")
     void sendMessage() {
+        messageSender.sendMessage(id, text);
+        verify(telegramBot, times(1)).execute(captor.capture());
 
+        var sendMessage = captor.getValue();
 
-        SendMessage sendMessage = new SendMessage(id, text);
-
-        when(messageSender.sendMessage(anyLong(), anyString())).thenReturn(sendMessage);
-
-        assertEquals(sendMessage, messageSender.sendMessage(id, text));
-    }
-
-    @Test
-    @DisplayName("Вывод сообщения с клавиатурой")
-    void sendMessageWithKeyboard() {
-
-        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-
-        SendMessage sendMessage = new SendMessage(id, text).replyMarkup(inlineKeyboardMarkup);
-
-        when(messageSender.sendMessageWithKeyboard(id, text, inlineKeyboardMarkup)).thenReturn(sendMessage);
-
-        assertEquals(messageSender.sendMessageWithKeyboard(id, text, inlineKeyboardMarkup), sendMessage);
-
+        assertEquals(sendMessage.getParameters().get("text"), text);
+        assertEquals(sendMessage.getParameters().get("chat_id"), id);
     }
 }
