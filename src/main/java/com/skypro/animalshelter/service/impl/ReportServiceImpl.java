@@ -15,7 +15,6 @@ import com.skypro.animalshelter.repository.ReportRepository;
 import com.skypro.animalshelter.repository.SheltersUserRepository;
 import com.skypro.animalshelter.service.ReportService;
 import com.skypro.animalshelter.util.MessageSender;
-import liquibase.pro.packaged.S;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -87,7 +86,7 @@ public class ReportServiceImpl implements ReportService {
         return messageSender.sendMessage(chatId, "Отчет добавлен. Не забывайте отправлять отчеты о вашем питомце ежедневно");
     }
 
-    @Scheduled(cron = "0 00 21 * * *") //напоминания каждый день, если до 21 отчет так и не был прислан
+    @Scheduled(cron = "0 00 21 * * *")
     public void reportReminder() {
 
         List<SheltersUser> users = userRepository.findSheltersUserByDataAdoptIsNotNull();
@@ -105,7 +104,7 @@ public class ReportServiceImpl implements ReportService {
         }
     }
 
-    @Scheduled(cron = "0 00 21 * * *") //напоминание в 21 если уже 2 дня не было отчетов
+    @Scheduled(cron = "0 00 21 * * *")
     public void reportReminderTwoDaysNoReport() {
 
         List<SheltersUser> users = userRepository.findSheltersUserByDataAdoptIsNotNull();
@@ -120,7 +119,7 @@ public class ReportServiceImpl implements ReportService {
         }
     }
 
-    @Scheduled(cron = "0 00 12 * * *") //когда прошло 30 дней и принимается решение от волонтеров. Тут сделан выбор по рандому
+    @Scheduled(cron = "0 00 12 * * *")
     public void probationSolutionSuccess() {
 
         List<SheltersUser> users = userRepository.findSheltersUserByDataAdoptIsNotNull();
@@ -136,12 +135,14 @@ public class ReportServiceImpl implements ReportService {
                         case 1:
                             sheltersUser.setUserType(ShelterUserType.SUCCESSFUL_COMPLETION);
                             messageSender.sendMessage(report.get().getSheltersUser().getChatId(),
-                                    "Поздравляю! Вы прошли испытательный срок и можете оставить питомца у себя!");;
+                                    "Поздравляю! Вы прошли испытательный срок и можете оставить питомца у себя!");
+                            ;
                             break;
                         case 2:
                             sheltersUser.setUserType(ShelterUserType.FAILED);
                             messageSender.sendMessage(report.get().getSheltersUser().getChatId(),
-                                    "Вы не прошли испытательный срок. Наши волонтеры с Вами свяжутся с Вами.");;
+                                    "Вы не прошли испытательный срок. Наши волонтеры с Вами свяжутся с Вами.");
+                            ;
                             break;
                         case 3:
                             sheltersUser.setUserType(ShelterUserType.PROBATION_EXTEND_14);
@@ -153,7 +154,7 @@ public class ReportServiceImpl implements ReportService {
                             sheltersUser.setUserType(ShelterUserType.PROBATION_EXTEND_30);
                             messageSender.sendMessage(report.get().getSheltersUser().getChatId(),
                                     "Волонтеры решили, что Ваш испытательный срок будет продлен на 30 дней. " +
-                                            "Продолжайте ежедневно присылать отчеты о питомце.");;
+                                            "Продолжайте ежедневно присылать отчеты о питомце.");
                             break;
                     }
                 }
@@ -186,7 +187,6 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public Report findReportById(Long id) {
-
         return reportRepository.findById(id).orElseThrow(ReportNotFoundException::new);
     }
 

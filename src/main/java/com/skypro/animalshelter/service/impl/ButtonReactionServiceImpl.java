@@ -1,7 +1,6 @@
 package com.skypro.animalshelter.service.impl;
 
 import com.pengrad.telegrambot.model.CallbackQuery;
-import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.skypro.animalshelter.model.ShelterInfo;
 import com.skypro.animalshelter.repository.ShelterInfoRepository;
@@ -10,19 +9,16 @@ import com.skypro.animalshelter.service.MenuService;
 import com.skypro.animalshelter.service.ReportService;
 import com.skypro.animalshelter.service.TakeAnimal;
 import com.skypro.animalshelter.util.CallbackDataRequest;
-import com.skypro.animalshelter.util.KeyboardUtil;
 import com.skypro.animalshelter.util.MessageSender;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-import static com.skypro.animalshelter.util.CallbackDataRequest.*;
 
 @Service
 public class ButtonReactionServiceImpl implements ButtonReactionService {
 
     private final MenuService menuService;
-    private final KeyboardUtil keyboardUtil;
     private final MessageSender messageSender;
     private final ShelterInfoRepository shelterInfoRepository;
     private final ReportService reportService;
@@ -31,13 +27,11 @@ public class ButtonReactionServiceImpl implements ButtonReactionService {
 
     private boolean isCat = false;
 
-    public ButtonReactionServiceImpl(MenuService menuService, KeyboardUtil keyboardUtil, MessageSender messageSender, ShelterInfoRepository shelterInfoRepository, ReportService reportService, TakeAnimal takeAnimal) {
+    public ButtonReactionServiceImpl(MenuService menuService, MessageSender messageSender, ShelterInfoRepository shelterInfoRepository, ReportService reportService, TakeAnimal takeAnimal) {
         this.menuService = menuService;
-        this.keyboardUtil = keyboardUtil;
         this.messageSender = messageSender;
         this.shelterInfoRepository = shelterInfoRepository;
         this.reportService = reportService;
-
         this.takeAnimal = takeAnimal;
     }
 
@@ -46,7 +40,7 @@ public class ButtonReactionServiceImpl implements ButtonReactionService {
 
         Long chatId = callbackQuery.message().chat().id();
         String data = callbackQuery.data();
-        CallbackDataRequest constantByRequest = CallbackDataRequest.getConstantByRequest(data); // Здесь ищем нужную константу в зависимости от пришедшего callbackQuery
+        CallbackDataRequest constantByRequest = CallbackDataRequest.getConstantByRequest(data);
         Optional<ShelterInfo> shelterInfo;
 
         if (isCat) {
@@ -60,43 +54,33 @@ public class ButtonReactionServiceImpl implements ButtonReactionService {
             case CAT:
                 isCat = true;
                 return menuService.getCatMenu(chatId);
-
             case DOG:
                 isCat = false;
                 return menuService.getDogMenu(chatId);
-
             case GENERAL_SHELTER_INFO:
                 return menuService.getInfoAboutShelter(chatId);
-
             case ABOUT_SHELTER:
                 if (shelterInfo.isPresent()) {
                     return messageSender.sendMessage(chatId, shelterInfo.get().getAboutShelter());
                 }
-
             case CONTACT_SHELTER:
                 if (shelterInfo.isPresent()) {
                     return messageSender.sendMessage(chatId, shelterInfo.get().getAddressAndSchedule());
                 }
-
             case SAFETY_CONTACT_FOR_CAR_PASS:
                 if (shelterInfo.isPresent()) {
                     return messageSender.sendMessage(chatId, shelterInfo.get().getSafetyContactForCarPass());
                 }
-
             case SAFETY_IN_SHELTER_TERRITORY:
                 if (shelterInfo.isPresent()) {
                     return messageSender.sendMessage(chatId, shelterInfo.get().getSafetyOnTerritory());
                 }
-
             case GIVE_MY_CONTACT:
                 return messageSender.sendMessage(chatId, "Введите ваши данные в формате \"Имя Фамилия номер телефона с кодом +7\" ");
-
             case CALL_VOLUNTEER:
-                return messageSender.sendMessage(chatId, "Позвать волонтера");//наверно отдельный какой то чат с волонтером
-
+                return messageSender.sendMessage(chatId, "Позвать волонтера");
             case ROLLBACK:
-                return menuService.getStartMenuShelter(chatId); //Тут возврат в меню выбора кошек/собак, надо поменять на следующий шаг
-
+                return menuService.getStartMenuShelter(chatId);
             case HOW_TO_TAKE_ANIMAL:
                 return menuService.getInfoAboutTakeAnimal(chatId, isCat);
 
@@ -153,7 +137,4 @@ public class ButtonReactionServiceImpl implements ButtonReactionService {
 
         }
     }
-
-
-
 }

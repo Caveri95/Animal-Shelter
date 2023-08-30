@@ -71,7 +71,5 @@ public class UpdateHandlerServiceImpl implements UpdateHandlerService {
         } else if (update.message().photo() != null || update.message().caption() != null) {
             reportService.postReport(chatId, update);
         }
-
-
     }
 }

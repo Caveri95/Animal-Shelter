@@ -15,12 +15,10 @@ public class MenuServiceImpl implements MenuService {
 
     private final TelegramBot telegramBot;
     private final KeyboardUtil keyboardUtil;
-    private final MessageSender messageSender;
 
-    public MenuServiceImpl(TelegramBot telegramBot, KeyboardUtil keyboardUtil, MessageSender messageSender) {
+    public MenuServiceImpl(TelegramBot telegramBot, KeyboardUtil keyboardUtil) {
         this.telegramBot = telegramBot;
         this.keyboardUtil = keyboardUtil;
-        this.messageSender = messageSender;
     }
 
     @Override
@@ -91,8 +89,8 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public SendMessage getInfoAboutTakeAnimal(Long chatId, boolean isCat) {
-        if (!isCat) {
 
+        if (!isCat) {
             InlineKeyboardMarkup keyboard = keyboardUtil.setKeyboard(
                     SHELTER_RULES_BEFORE_MEETING_ANIMAL,
                     DOCUMENTS_TO_TAKE_ANIMAL,
@@ -129,5 +127,4 @@ public class MenuServiceImpl implements MenuService {
             return sendMessage;
         }
     }
-
 }

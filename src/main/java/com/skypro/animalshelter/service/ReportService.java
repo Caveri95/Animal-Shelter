@@ -7,6 +7,7 @@ import com.skypro.animalshelter.model.Animal;
 import com.skypro.animalshelter.model.Report;
 import org.springframework.data.jpa.repository.JpaRepository;
 import com.skypro.animalshelter.exception.ReportNotFoundException;
+import org.springframework.scheduling.annotation.Scheduled;
 
 import java.util.List;
 

@@ -16,14 +16,11 @@ public class Report {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
     private String photo;
     private LocalDate localDate;
-
     private String reportTextUnderPhoto;
 
     @OneToOne
     @JoinColumn(name = "shelter_users_id")
     private SheltersUser sheltersUser;
-
 }

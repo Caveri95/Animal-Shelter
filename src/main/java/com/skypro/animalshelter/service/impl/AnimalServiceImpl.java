@@ -11,7 +11,6 @@ import java.util.List;
 @Service
 public class AnimalServiceImpl implements AnimalService {
 
-
     private final AnimalRepository animalRepository;
 
     public AnimalServiceImpl(AnimalRepository animalRepository) {
@@ -38,10 +37,10 @@ public class AnimalServiceImpl implements AnimalService {
             throw new AnimalNotFoundException();
         }
     }
-@Override
-    public Animal findAnimalById(Long id) {
 
-    return animalRepository.findById(id).orElseThrow(AnimalNotFoundException::new);
+    @Override
+    public Animal findAnimalById(Long id) {
+        return animalRepository.findById(id).orElseThrow(AnimalNotFoundException::new);
     }
 
     @Override

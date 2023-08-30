@@ -29,7 +29,6 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         this.reportService = reportService;
     }
 
-
     @PostConstruct
     public void init() {
         telegramBot.setUpdatesListener(this);
@@ -43,7 +42,6 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
                 if (update.callbackQuery() != null) {
                     buttonReactionService.buttonReaction(update.callbackQuery());
-
                 } else if (update.message().text() != null) {
                     updateHandler.messageHandler(update);
                 } else if (update.message().photo() != null || update.message().caption() != null) {

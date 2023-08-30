@@ -20,7 +20,6 @@ import java.util.List;
 public class SheltersUserController {
 
     private final SheltersUserServiceImpl userService;
-
     public SheltersUserController(SheltersUserServiceImpl userService) {
         this.userService = userService;
     }

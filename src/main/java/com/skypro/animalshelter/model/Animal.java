@@ -19,7 +19,6 @@ public class Animal {
     private String breed;
     private Boolean inShelter;
 
-
     @Override
     public String toString() {
         return "Порода - " + breed;
