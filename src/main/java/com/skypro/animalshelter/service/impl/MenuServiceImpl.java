@@ -103,7 +103,8 @@ public class MenuServiceImpl implements MenuService {
                     CYNOLOGIST_ADVICE,
                     CYNOLOGISTS,
                     REFUSE_REASONS,
-                    GIVE_MY_CONTACT);
+                    GIVE_MY_CONTACT,
+                    ROLLBACK);
 
             SendMessage sendMessage = new SendMessage(chatId, "Постараюсь дать Вам полную информацию " +
                     "о том, как разобраться с бюрократическими (оформление договора) и бытовыми (подготовка к жизни с животным) " +
@@ -118,7 +119,8 @@ public class MenuServiceImpl implements MenuService {
                     HOUSE_RULES_FOR_SMALL_ANIMAL,
                     HOUSE_RULES_FOR_ADULT_ANIMAL,
                     HOUSE_RULES_FOR_ANIMAL_WITH_DISABILITY,
-                    GIVE_MY_CONTACT);
+                    GIVE_MY_CONTACT,
+                    ROLLBACK);
 
             SendMessage sendMessage = new SendMessage(chatId, "Постараюсь дать Вам полную информацию " +
                     "о том, как разобраться с бюрократическими (оформление договора) и бытовыми (подготовка к жизни с животным) " +

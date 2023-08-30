@@ -141,12 +141,12 @@ public class ButtonReactionServiceImpl implements ButtonReactionService {
                 return takeAnimal.takeAnimal(chatId, isCat);
             case REPORT_ANIMAL:
                 if (reportService.checkIsFullReportPostToday()) {
-                    return messageSender.sendMessage(chatId, "Сегодня Вы уже отправили отчет о своем питомце. Наши волонтеры" +
+                    return messageSender.sendMessage(chatId, "Сегодня Вы уже отправили отчет о своем питомце. Наши волонтеры " +
                             "посмотрят его в ближайшее время");
                 }
-                return messageSender.sendMessage(chatId, "Отправьте фото животного и текст с указанием следующей информации:\n * Рацион животного.*\n" +
-                        "- * Общее самочувствие и привыкание к новому месту.*\n" +
-                        "- * Изменения в поведении: отказ от старых привычек, приобретение новых и т.д.*");
+                return messageSender.sendMessage(chatId, "Отправьте фото животного и текст с указанием следующей информации:\n * Рацион животного. \n" +
+                        " * Общее самочувствие и привыкание к новому месту.*\n" +
+                        " * Изменения в поведении: отказ от старых привычек, приобретение новых и т.д.*");
 
             default:
                 return messageSender.sendMessage(chatId, "Обратитесь к волонтеру по телефону: 89111111111");
