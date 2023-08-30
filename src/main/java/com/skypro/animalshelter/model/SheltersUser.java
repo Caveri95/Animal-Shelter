@@ -9,8 +9,8 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @NoArgsConstructor
-@Getter
-@Setter
+//@Getter
+//@Setter
 @EqualsAndHashCode
 @Entity
 public class SheltersUser {
@@ -47,5 +47,69 @@ public class SheltersUser {
                 ", surname='" + surname + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 '}';
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public LocalDate getDataAdopt() {
+        return dataAdopt;
+    }
+
+    public void setDataAdopt(LocalDate dataAdopt) {
+        this.dataAdopt = dataAdopt;
+    }
+
+    public long getChatId() {
+        return chatId;
+    }
+
+    public void setChatId(long chatId) {
+        this.chatId = chatId;
+    }
+
+    public Animal getAnimal() {
+        return animal;
+    }
+
+    public void setAnimal(Animal animal) {
+        this.animal = animal;
+    }
+
+    public ShelterUserType getUserType() {
+        return userType;
+    }
+
+    public void setUserType(ShelterUserType userType) {
+        this.userType = userType;
     }
 }

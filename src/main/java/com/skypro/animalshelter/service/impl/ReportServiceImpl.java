@@ -50,8 +50,8 @@ public class ReportServiceImpl implements ReportService {
             Optional<Report> reports = reportRepository.findByLocalDateEquals(LocalDate.now());
             if (reports.isPresent()) {
                 if (!Objects.isNull(reports.get().getPhoto()) && !Objects.isNull(reports.get().getReportTextUnderPhoto())) {
-                    return messageSender.sendMessage(chatId, "Вы уже отправляли сегодня отчет по питомцу, наши волонтеры" +
-                            "посмотрят Ваш отчет");
+                    return messageSender.sendMessage(chatId, "Вы уже отправляли сегодня отчет о питомце, наши волонтеры" +
+                            "посмотрят его в ближайшее время.");
                 }
             }
         }
@@ -78,13 +78,13 @@ public class ReportServiceImpl implements ReportService {
         }
 
         if (Objects.isNull(newReport.getPhoto()) || Objects.isNull(newReport.getReportTextUnderPhoto())) {
-            return messageSender.sendMessage(chatId, "Нужно ФОТО и ОПИСАНИЕ под ним Дорогой усыновитель, мы заметили, что ты заполняешь " +
+            return messageSender.sendMessage(chatId, "Требуется предоставить ФОТО и ОПИСАНИЕ под ним. Дорогой усыновитель, мы заметили, что ты заполняешь " +
                     "отчет не так подробно, как необходимо. Пожалуйста, подойди ответственнее к этому занятию. " +
-                    "В противном случае волонтеры приюта будут обязаны самолично проверять условия содержания животного");
+                    "В противном случае волонтеры приюта будут вынуждены лично проверять условия содержания животного.");
         }
         reportRepository.save(newReport);
 
-        return messageSender.sendMessage(chatId, "Отчет добавлен, не забывайте отправлять отчеты о вашем питомце ежедневно");
+        return messageSender.sendMessage(chatId, "Отчет добавлен. Не забывайте отправлять отчеты о вашем питомце ежедневно");
     }
 
     @Scheduled(cron = "0 00 21 * * *") //напоминания каждый день, если до 21 отчет так и не был прислан
@@ -99,7 +99,7 @@ public class ReportServiceImpl implements ReportService {
                     .reduce((first, second) -> second);
             if (report.isPresent()) {
                 if (report.get().getLocalDate().isAfter(report.get().getLocalDate().plusDays(1))) {
-                    messageSender.sendMessage(report.get().getSheltersUser().getChatId(), "Напоминаю о необходимости присылать отчеты каждый день о жизни вашего питомца");
+                    messageSender.sendMessage(report.get().getSheltersUser().getChatId(), "Напоминаю о необходимости присылать отчеты о жизни вашего питомца каждый день.");
                 }
             }
         }
@@ -114,7 +114,7 @@ public class ReportServiceImpl implements ReportService {
             Optional<Report> report = reportRepository.findBySheltersUserId(user.getId()).stream().sorted(Comparator.comparing(Report::getLocalDate)).reduce((first, second) -> second);
             if (report.isPresent()) {
                 if (report.get().getLocalDate().isAfter(report.get().getLocalDate().plusDays(2))) {
-                    messageSender.sendMessage(report.get().getSheltersUser().getChatId(), "Вы не присылали отчет уже 2 дня, с вами свяжется наш волонтер");
+                    messageSender.sendMessage(report.get().getSheltersUser().getChatId(), "Вы не присылали отчет уже 2 дня. С Вами свяжется наш волонтер.");
                 }
             }
         }
@@ -136,24 +136,24 @@ public class ReportServiceImpl implements ReportService {
                         case 1:
                             sheltersUser.setUserType(ShelterUserType.SUCCESSFUL_COMPLETION);
                             messageSender.sendMessage(report.get().getSheltersUser().getChatId(),
-                                    "Поздравляю! Вы прошли испытательный срок и можете оставить питомца себе");;
+                                    "Поздравляю! Вы прошли испытательный срок и можете оставить питомца у себя!");;
                             break;
                         case 2:
                             sheltersUser.setUserType(ShelterUserType.FAILED);
                             messageSender.sendMessage(report.get().getSheltersUser().getChatId(),
-                                    "Вы не прошли испытательный срок. Наши волонтеры с Вами свяжутся");;
+                                    "Вы не прошли испытательный срок. Наши волонтеры с Вами свяжутся с Вами.");;
                             break;
                         case 3:
                             sheltersUser.setUserType(ShelterUserType.PROBATION_EXTEND_14);
                             messageSender.sendMessage(report.get().getSheltersUser().getChatId(),
                                     "Волонтеры решили, что Ваш испытательный срок будет продлен на 14 дней. " +
-                                            "Продолжайте ежедневно присылать отчеты о питомце");
+                                            "Продолжайте ежедневно присылать отчеты о питомце.");
                             break;
                         case 4:
                             sheltersUser.setUserType(ShelterUserType.PROBATION_EXTEND_30);
                             messageSender.sendMessage(report.get().getSheltersUser().getChatId(),
                                     "Волонтеры решили, что Ваш испытательный срок будет продлен на 30 дней. " +
-                                            "Продолжайте ежедневно присылать отчеты о питомце");;
+                                            "Продолжайте ежедневно присылать отчеты о питомце.");;
                             break;
                     }
                 }

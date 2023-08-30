@@ -18,7 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/report")
-@Tag(name = "Отчеты о питомцах", description = "CRUD операции и др.эндпоинты для работы с отчетами")
+@Tag(name = "Отчеты о питомцах", description = "CRUD-операции и другие эндпоинты для работы с отчетами")
 public class ReportController {
 
     private final ReportService reportService;
@@ -60,7 +60,7 @@ public class ReportController {
             @ApiResponse(responseCode = "200", description = "Отчет получен", content = {
                     @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = SheltersUser.class)))}),
             @ApiResponse(responseCode = "400", description = "Параметры запроса отсутствуют или имеют некорректный формат"),
-            @ApiResponse(responseCode = "404", description = "Животное не найден"),
+            @ApiResponse(responseCode = "404", description = "Животное не найдено"),
             @ApiResponse(responseCode = "500", description = "Произошла ошибка, не зависящая от вызывающей стороны")
     })
     public ResponseEntity<Report> getReportById(@PathVariable long id) {
@@ -74,12 +74,12 @@ public class ReportController {
     }
 
     @PutMapping
-    @Operation(summary = "Отредактировать отчет", description = "Введите id отчета и его данные")
+    @Operation(summary = "Отредактировать отчет", description = "Введите id отчета и новые данные")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Отчет отредактирован", content = {
                     @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Report.class)))}),
             @ApiResponse(responseCode = "400", description = "Параметры запроса отсутствуют или имеют некорректный формат"),
-            @ApiResponse(responseCode = "404", description = "Отчет для редактирования не найден"),
+            @ApiResponse(responseCode = "404", description = "Отчет не найден"),
             @ApiResponse(responseCode = "500", description = "Произошла ошибка, не зависящая от вызывающей стороны")
     })
     public ResponseEntity<Report> editReport(@RequestBody Report report) {

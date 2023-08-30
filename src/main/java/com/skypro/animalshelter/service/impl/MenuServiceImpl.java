@@ -28,7 +28,7 @@ public class MenuServiceImpl implements MenuService {
 
         InlineKeyboardMarkup keyboard = keyboardUtil.setKeyboard(CAT, DOG);
 
-        SendMessage sendMessage = new SendMessage(chatId, "Привет! Добро пожаловать в наш приют! Если вы ищете верного и преданного друга, то пришлите по адресу! " +
+        SendMessage sendMessage = new SendMessage(chatId, "Добро пожаловать в наш приют! Если вы ищете верного и преданного друга, то пришли по адресу! " +
                 " Вы хотите подружиться с кошкой или с " +
                 "собакой? Пожалуйста, выберите подходящий приют, чтобы узнать больше.").replyMarkup(keyboard);
         telegramBot.execute(sendMessage);
@@ -53,7 +53,7 @@ public class MenuServiceImpl implements MenuService {
                 REPORT_ANIMAL,
                 TAKE_CAT,
                 VOLUNTEER);
-        SendMessage sendMessage = new SendMessage(chatId, "Вы выбрали приют для кошек, чем могу помочь?").replyMarkup(keyboard);
+        SendMessage sendMessage = new SendMessage(chatId, "Вы выбрали приют для кошек. Что Вас интересует?").replyMarkup(keyboard);
         telegramBot.execute(sendMessage);
         return sendMessage;
     }
@@ -67,7 +67,7 @@ public class MenuServiceImpl implements MenuService {
                 REPORT_ANIMAL,
                 TAKE_DOG,
                 VOLUNTEER);
-        SendMessage sendMessage = new SendMessage(chatId, "Вы выбрали приют для собак, чем могу помочь?").replyMarkup(keyboard);
+        SendMessage sendMessage = new SendMessage(chatId, "Вы выбрали приют для собак. Что Вас интересует?").replyMarkup(keyboard);
         telegramBot.execute(sendMessage);
         return sendMessage;
     }
@@ -84,7 +84,7 @@ public class MenuServiceImpl implements MenuService {
                 VOLUNTEER,
                 ROLLBACK);
 
-        SendMessage sendMessage = new SendMessage(chatId, "Выберите интересующую вас информацию").replyMarkup(keyboard);
+        SendMessage sendMessage = new SendMessage(chatId, "Выберите интересующую информацию").replyMarkup(keyboard);
         telegramBot.execute(sendMessage);
         return sendMessage;
     }
@@ -105,9 +105,9 @@ public class MenuServiceImpl implements MenuService {
                     REFUSE_REASONS,
                     GIVE_MY_CONTACT);
 
-            SendMessage sendMessage = new SendMessage(chatId, "Постараюсь дать Вам максимально полную информацию " +
-                    "о том как разобраться с бюрократическими (оформление договора) и бытовыми (как подготовиться к жизни с животным) " +
-                    "вопросами)").replyMarkup(keyboard);
+            SendMessage sendMessage = new SendMessage(chatId, "Постараюсь дать Вам полную информацию " +
+                    "о том, как разобраться с бюрократическими (оформление договора) и бытовыми (подготовка к жизни с животным) " +
+                    "вопросами.").replyMarkup(keyboard);
             telegramBot.execute(sendMessage);
             return sendMessage;
         } else {
@@ -120,9 +120,9 @@ public class MenuServiceImpl implements MenuService {
                     HOUSE_RULES_FOR_ANIMAL_WITH_DISABILITY,
                     GIVE_MY_CONTACT);
 
-            SendMessage sendMessage = new SendMessage(chatId, "Постараюсь дать Вам максимально полную информацию " +
-                    "о том как разобраться с бюрократическими (оформление договора) и бытовыми (как подготовиться к жизни с животным) " +
-                    "вопросами)").replyMarkup(keyboard);
+            SendMessage sendMessage = new SendMessage(chatId, "Постараюсь дать Вам полную информацию " +
+                    "о том, как разобраться с бюрократическими (оформление договора) и бытовыми (подготовка к жизни с животным) " +
+                    "вопросами.").replyMarkup(keyboard);
             telegramBot.execute(sendMessage);
             return sendMessage;
         }

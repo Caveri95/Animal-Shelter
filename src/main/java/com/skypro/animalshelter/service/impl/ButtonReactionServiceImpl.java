@@ -92,7 +92,7 @@ public class ButtonReactionServiceImpl implements ButtonReactionService {
                 return messageSender.sendMessage(chatId, "Введите ваши данные в формате \"Имя Фамилия номер телефона с кодом +7\" ");
 
             case CALL_VOLUNTEER:
-                return messageSender.sendMessage(chatId, "Позвать волонтера, наверно отдельный какой то чат с волонтером");
+                return messageSender.sendMessage(chatId, "Позвать волонтера");//наверно отдельный какой то чат с волонтером
 
             case ROLLBACK:
                 return menuService.getStartMenuShelter(chatId); //Тут возврат в меню выбора кошек/собак, надо поменять на следующий шаг
@@ -144,12 +144,12 @@ public class ButtonReactionServiceImpl implements ButtonReactionService {
                     return messageSender.sendMessage(chatId, "Сегодня Вы уже отправили отчет о своем питомце. Наши волонтеры" +
                             "посмотрят его в ближайшее время");
                 }
-                return messageSender.sendMessage(chatId, "Отправьте фото животного и текст с указанием следующей информации: *Рацион животного.*\n" +
-                        "- *Общее самочувствие и привыкание к новому месту.*\n" +
-                        "- *Изменение в поведении: отказ от старых привычек, приобретение новых.*");
+                return messageSender.sendMessage(chatId, "Отправьте фото животного и текст с указанием следующей информации:\n * Рацион животного.*\n" +
+                        "- * Общее самочувствие и привыкание к новому месту.*\n" +
+                        "- * Изменения в поведении: отказ от старых привычек, приобретение новых и т.д.*");
 
             default:
-                return messageSender.sendMessage(chatId, "Такой функции нет, обратитесь к волонтеру");
+                return messageSender.sendMessage(chatId, "Обратитесь к волонтеру по телефону: 89111111111");
 
         }
     }

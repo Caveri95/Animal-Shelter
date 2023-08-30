@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/users")
-@Tag(name = "Пользователи приюта", description = "CRUD операции и др.эндпоинты для работы с пользователями")
+@Tag(name = "Пользователи приюта", description = "CRUD-операции и другие эндпоинты для работы с пользователями")
 public class SheltersUserController {
 
     private final SheltersUserServiceImpl userService;
@@ -36,7 +36,7 @@ public class SheltersUserController {
     }
 
     @GetMapping
-    @Operation(summary = "Получить список всех юзеров")
+    @Operation(summary = "Получить список всех пользователей")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Список пользователей получен", content = {
                     @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = SheltersUser.class)))
@@ -55,7 +55,7 @@ public class SheltersUserController {
     @GetMapping("/{id}")
     @Operation(summary = "Получить пользователя по его id", description = "Введите id пользователя")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Пользователь получен", content = {
+            @ApiResponse(responseCode = "200", description = "Пользователь найден", content = {
                     @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = SheltersUser.class)))}),
             @ApiResponse(responseCode = "400", description = "Параметры запроса отсутствуют или имеют некорректный формат"),
             @ApiResponse(responseCode = "404", description = "Пользователь не найден"),
@@ -72,12 +72,12 @@ public class SheltersUserController {
     }
 
     @PutMapping
-    @Operation(summary = "Отредактировать данные пользователя", description = "Введите id пользователя и его данные")
+    @Operation(summary = "Отредактировать данные пользователя", description = "Введите id пользователя и новые данные")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Пользователь отредактирован", content = {
+            @ApiResponse(responseCode = "200", description = "Данные о пользователе отредактированы", content = {
                     @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = SheltersUser.class)))}),
             @ApiResponse(responseCode = "400", description = "Параметры запроса отсутствуют или имеют некорректный формат"),
-            @ApiResponse(responseCode = "404", description = "Пользователь для редактирования не найден"),
+            @ApiResponse(responseCode = "404", description = "Пользователь не найден"),
             @ApiResponse(responseCode = "500", description = "Произошла ошибка, не зависящая от вызывающей стороны")
     })
     public ResponseEntity<SheltersUser> editUser(@RequestBody SheltersUser sheltersUser) {
@@ -91,7 +91,7 @@ public class SheltersUserController {
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Удалить юзера из базы данных", description = "Необходимо указать id пользователя, которого нужно удалить")
+    @Operation(summary = "Удалить пользователя из базы данных", description = "Необходимо указать id пользователя, которого нужно удалить")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Пользователь удален", content = {
                     @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = SheltersUser.class)))}),

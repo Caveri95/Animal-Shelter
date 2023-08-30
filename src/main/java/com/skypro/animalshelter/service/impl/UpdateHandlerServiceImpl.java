@@ -65,7 +65,7 @@ public class UpdateHandlerServiceImpl implements UpdateHandlerService {
 
                 messageSender.sendMessage(chatId, "Ваши данные успешно обновлены.");
             } else {
-                messageSender.sendMessage(chatId, "Неккоректный формат сообщения!");
+                messageSender.sendMessage(chatId, "Неккоректный формат данных!");
             }
 
         } else if (update.message().photo() != null || update.message().caption() != null) {

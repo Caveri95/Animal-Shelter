@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/animal")
-@Tag(name = "Животные приюта", description = "CRUD операции и др.эндпоинты для работы с животными")
+@Tag(name = "Животные приюта", description = "CRUD-операции и другие эндпоинты для работы с животными")
 public class AnimalController {
 
     private final AnimalService animalService;
@@ -54,12 +54,12 @@ public class AnimalController {
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Получить животного по его id", description = "Введите id животного")
+    @Operation(summary = "Получить информацию о животном по его id", description = "Введите id животного")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Животное получен", content = {
+            @ApiResponse(responseCode = "200", description = "Информация о животном получена", content = {
                     @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = SheltersUser.class)))}),
             @ApiResponse(responseCode = "400", description = "Параметры запроса отсутствуют или имеют некорректный формат"),
-            @ApiResponse(responseCode = "404", description = "Животное не найден"),
+            @ApiResponse(responseCode = "404", description = "Животное не найдено"),
             @ApiResponse(responseCode = "500", description = "Произошла ошибка, не зависящая от вызывающей стороны")
     })
     public ResponseEntity<Animal> getAnimalById(@PathVariable long id) {
@@ -73,12 +73,12 @@ public class AnimalController {
     }
 
     @PutMapping
-    @Operation(summary = "Отредактировать животного", description = "Введите id животного и его данные")
+    @Operation(summary = "Отредактировать данные о животном", description = "Введите id животного и его данные")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Животное отредактировано", content = {
+            @ApiResponse(responseCode = "200", description = "Данные о животном отредактированы", content = {
                     @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Animal.class)))}),
             @ApiResponse(responseCode = "400", description = "Параметры запроса отсутствуют или имеют некорректный формат"),
-            @ApiResponse(responseCode = "404", description = "Животное для редактирования не найдено"),
+            @ApiResponse(responseCode = "404", description = "Животное не найдено"),
             @ApiResponse(responseCode = "500", description = "Произошла ошибка, не зависящая от вызывающей стороны")
     })
     public ResponseEntity<Animal> editAnimal(@RequestBody Animal animals) {

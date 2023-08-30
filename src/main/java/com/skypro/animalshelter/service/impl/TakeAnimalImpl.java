@@ -38,21 +38,21 @@ public class TakeAnimalImpl implements TakeAnimal {
         Optional<SheltersUser> user = userRepository.findSheltersUserByChatId(chatId);
 
         if (user.isEmpty()) {
-            SendMessage sendMessage = new SendMessage(chatId,"Пожалуйста, прежде чем взять себе питомца оставьте " +
+            SendMessage sendMessage = new SendMessage(chatId,"Пожалуйста, прежде чем взять себе питомца, оставьте " +
                     "свои контактные данные в формате \"Имя Фамилия Номер телефона с кодом +7\"");
             telegramBot.execute(sendMessage);
             return sendMessage;
         }
 
         if (user.get().getAnimal() != null) {
-            SendMessage sendMessage = new SendMessage(chatId,"Больше одного животного в нашем приюте брать нельзя");
+            SendMessage sendMessage = new SendMessage(chatId,"Больше одного животного в нашем приюте брать нельзя.");
             telegramBot.execute(sendMessage);
             return sendMessage;
         }
 
         Optional<Animal> animal = isCat ? animalRepository.findFirstAnimalByTypeAnimalAndInShelter(CAT.getCallbackData(), true) : animalRepository.findFirstAnimalByTypeAnimalAndInShelter(DOG.getCallbackData(), true);
         if (animal.isEmpty()) {
-            return messageSender.sendMessage(chatId, "Извините, сейчас в приюте нет животных");
+            return messageSender.sendMessage(chatId, "Извините, сейчас в приюте нет животных.");
         }
 
         animal.get().setInShelter(false);
@@ -63,7 +63,7 @@ public class TakeAnimalImpl implements TakeAnimal {
         user.get().setUserType(ShelterUserType.PROBATION);
         userRepository.save(user.get());
 
-        return messageSender.sendMessage(chatId, "Поздравляем! Вы приютили себя питомца, не забывайте отправлять " +
-                "ежедневные отчеты о питомце");
+        return messageSender.sendMessage(chatId, "Поздравляем! Вы приютили у себя питомца! Не забывайте отправлять " +
+                "ежедневные отчеты о его жизни с Вами.");
     }
 }
